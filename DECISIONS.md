@@ -5,6 +5,52 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-08-20 — Second pass: 730-document backlog screened, 5 new candidates (7-11)
+
+Discovery-only pass, no backtest, no EA, no reopening of closed mechanisms (SMC/liquidity
+sweep, ORB, compression breakout, static OHLC regime mining, tick microstructure, price
+lead/lag, rolling-regression pair mean reversion, LBMA first-minute continuation, VIX-level
+regime filtering, candlestick/indicator families, grid/martingale, raw trend following all
+explicitly out of scope per this pass's brief; FOMC pre-announcement drift held at HOLD).
+Screened the previously-flagged unread ~730-document library expansion (`archive_r2/` 108,
+`arxiv/` 516, `qp_papers/` 22, `quantpedia/` md 82 = 728 titles) hierarchically — title/
+metadata index, then a keyword grep across harvest logs for the brief's priority topics
+(dealer gamma, open interest, term structure, real yield, auction imbalance, breadth,
+implied vol, etc.), then abstract/conclusion reads for keyword hits only. No full-document
+ingestion.
+
+5 candidates shortlisted (7-11), weighted toward options-market and rates information the
+prior pass never touched: real-yield (TIPS) impulse on GOLD (score 43/50, data grade A);
+GVZ implied-minus-realized volatility spread on GOLD (42/50, data grade A/B); dealer
+zero-gamma flip level from options open interest on US100 (36/50, data grade C — upgrades
+the prior pass's NOT-WORTHY OpEx-calendar candidate with real positioning data instead of a
+calendar proxy); index-vs-constituent implied-vol dispersion wedge on US100 (33/50, data
+grade C, explicitly low-frequency/monthly, flagged not rejected); VIX/VXN term-structure
+SLOPE on US100 (31/50, data grade B, explicitly flagged as carrying real risk of failing
+the same matched-control gate that already closed Candidate 3, since it shares the same
+underlying data series differentiated only by transform).
+
+One candidate (real-yield/TIPS, #7) is flagged with a source-quality caveat: the mechanism
+is well-established general macro-finance knowledge but was not located as a specific paper
+inside the 730-document backlog itself during this pass — recommend a targeted follow-up
+harvest (FRED/BIS/World-Gold-Council-adjacent literature) before treating it as
+corpus-verified to the same standard as the other four.
+
+10 other concepts individually reasoned and rejected/parked (Indian-MCX gold-options PhD
+protocol, quote-microstructure PhD synopsis, sentiment+VIX-level overnight anomaly needing
+a paid proprietary indicator, a pure ML forecasting paper with no actor/mechanism, and a
+call-auction imbalance model parked on data infeasibility rather than rejected), plus five
+bulk-rejected families (~65 entries: momentum/carry, single-stock equity factors,
+unautomatable/out-of-scope pairs and 13F-cloning constructions, calendar-seasonality
+effects, and generic strategy-compendium books) — all logged in `CONCEPT_INDEX.md` so none
+are rediscovered. Full detail appended to `CLAUDE_TO_CHATGPT.md` under Candidates 7-11.
+
+No backtesting, optimization, or implementation was performed producing this pass — same
+rule as pass one. Awaiting the Research Lead's choice of which single candidate (7-11) to
+test next.
+
+---
+
 ## 2026-08-20 — Candidate 3 (external volatility surface / VXN regime filter) tested, REJECTED, closed
 
 Ran the full pre-registered pipeline the Candidate 3 minimum-viable-test specified,

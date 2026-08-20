@@ -748,3 +748,473 @@ Claude's own verdict on #4 is NOT-WORTHY despite a real, cited mechanism.
 3. **GOLD/SILVER or XAUUSD/XAUEUR cointegrated-spread mean reversion** — zero new data
    needed (both legs already cached), and it's a genuinely different statistical
    construction (cointegration) than the prior lead-lag/regression approach.
+
+---
+
+# SECOND PASS — 2026-08-20 — 730-document backlog, options/positioning/macro focus
+
+Scope: the ~730-document library expansion flagged as unread in the first pass (`archive_r2/`
+108 files, `arxiv/` 516 files, `qp_papers/` 22 files, `quantpedia/` md 82 files) was screened
+hierarchically — folder listing → harvest-log title index → grep for priority-topic keywords
+(gamma, dealer, open interest, skew, term structure, breadth, real yield, auction imbalance,
+etc.) → abstract/conclusion read only for keyword hits → deeper read only for survivors. No
+full-document ingestion. Objective for this pass: mechanisms using information NOT reducible
+to the traded instrument's own OHLC, weighted toward options positioning, index internals,
+macro-surprise, and gold-specific external data; scored for opportunity frequency (2-3/week+
+preferred) rather than the prior pass's scheduled-auction/regime-filter framing.
+
+New scoring rubric for Candidates 7-11 (per this pass's brief, /50 not /40 — do not compare
+directly to Candidates 1-6's /40 scores above): Source quality, Economic mechanism, New
+information, Causality, Automation, Data accessibility, Opportunity frequency, Expected cost
+headroom, Falsifiability, Novelty vs Apex — each 0-5. Historical/claimed profit explicitly
+excluded from scoring, same rule as pass one.
+
+---
+
+## CANDIDATE 7
+
+**Mechanism:** Gold pays no yield; its opportunity cost is the real (inflation-adjusted)
+interest rate. When real yields fall unexpectedly, the opportunity cost of holding
+non-yielding gold falls and real-money/macro allocators are incentivized to add gold
+exposure; when real yields rise unexpectedly, the reverse. This is a rates/opportunity-cost
+relationship, not a price pattern.
+
+**Economic actor:** Real-money macro funds, central-bank reserve managers, systematic
+macro/CTA funds that size positions off rate-sensitive relative value.
+
+**Forced/incentivized behavior:** Portfolio rebalancing driven by an opportunity-cost
+calculus versus the risk-free real rate — mechanical in aggregate even though any single
+fund's trigger is discretionary.
+
+**Observable signal:** Day-over-day change (or level vs. trailing MA) in the 10-Year
+Treasury Inflation-Indexed real yield.
+
+**Instrument:** GOLD (secondary).
+
+**Expected frequency:** Daily (the underlying series updates once per trading day).
+
+**Holding horizon:** Session to multi-day.
+
+**Exact external/new information:** Real (inflation-adjusted) Treasury yield level/change —
+a rates series, not derivable from GOLD's own OHLC.
+
+**Data source:** FRED series DFII10 (10-Year Treasury Inflation-Indexed Security, Constant
+Maturity); alternative causal construction from DGS10 (nominal) minus T10YIE (breakeven
+inflation), both also FRED. Free, no key.
+
+**Data access A/B/C/D:** A.
+
+**Automation feasibility:** HIGH — a single daily numeric pull, no scraping or auth. Exact
+publication timestamp vs. GOLD's session close must be verified before treating the value
+as causally available pre-trade (flagged under failure mode).
+
+**Cost risk:** Low relative to a daily-holding-period signal; the binding constraint is
+statistical power (see failure mode), not transaction cost.
+
+**Main failure mode:** (1) Publication-lag risk — must confirm the exact FRED release
+timestamp is causally prior to the GOLD session it's meant to condition, or the test will
+have an invisible look-ahead leak. (2) The gold/real-yield relationship is well documented
+at multi-week/multi-month macro horizons; at daily granularity it may be far noisier and
+may not clear a meaningful signal-to-cost bar.
+
+**Prior Apex overlap:** NONE. No prior experiment used a rates/yield-derived series — all
+volatility/regime work (including the already-closed Candidate 3) used price-derived or
+implied-volatility series, never an interest-rate series.
+
+**Why genuinely different:** A fundamentally different information CLASS (interest-rate /
+opportunity-cost data), not another threshold, indicator, or timeframe on price or
+volatility.
+
+**Source citation:** General macro-finance literature on gold's negative sensitivity to real
+yields (e.g. the "gold vs. real rates" relationship widely documented in central-bank and
+market-research literature). Honesty flag: this specific mechanism was NOT located as a
+paper inside the 730-document backlog during this pass — it is carried in from general
+domain knowledge, not from a source physically inspected this session. Recommend a targeted
+follow-up harvest (FRED/BIS/World Gold Council-adjacent literature) before treating the
+source-quality score below as equivalent to a corpus-verified candidate.
+
+**Falsifiable prediction:** GOLD's next-session return shows no statistically distinguishable
+relationship to the prior session's real-yield change, once matched-controlled against
+GOLD's own trend/volatility context.
+
+**Minimum clean test:** Single pre-registered regression/bucket test — GOLD forward return
+vs. lagged real-yield daily change — TRAIN/VALIDATION split, HAC t-stat + block permutation,
+matched-control against GOLD's own momentum/vol regime (same control discipline that closed
+Candidate 3).
+
+**Score /50:** Source quality 2, Economic mechanism 5, New information 5, Causality 4,
+Automation 5, Data accessibility 5, Opportunity frequency 3, Cost headroom 4, Falsifiability
+5, Novelty vs Apex 5 — **43/50**.
+
+---
+
+## CANDIDATE 8
+
+**Mechanism:** Options writers on gold (via GLD-referenced options, captured by CBOE's Gold
+ETF Volatility Index, GVZ) systematically price implied volatility above what subsequently
+realizes, compensating them for tail/crash risk — a documented volatility risk premium.
+The GAP between GVZ (forward-looking, options-market-implied) and GOLD's own trailing
+realized volatility is a persistent, time-varying premium that widens/narrows with
+institutional hedging demand — an externally sourced (options-market) signal about current
+fear/complacency specifically in gold, not derivable from GOLD's own ATR/range features.
+
+**Economic actor:** Gold-options market makers and institutional hedgers buying downside
+protection (mining companies, ETF authorized participants, macro funds).
+
+**Forced/incentivized behavior:** Persistent hedging demand for gold puts bids implied vol
+above what later realizes; sharp widenings/collapses in that spread reflect shifts in
+institutional hedging urgency, not gold's own price action.
+
+**Observable signal:** GVZ level minus GOLD's trailing N-day realized volatility (the
+variance/volatility risk-premium spread), or GVZ's own trend/percentile as a simpler proxy.
+
+**Instrument:** GOLD (secondary — but directly the named priority topic for this
+instrument).
+
+**Expected frequency:** GVZ is disseminated with both a real-time intraday value and a
+daily settlement; daily-close use is straightforward, intraday use needs a live feed.
+
+**Holding horizon:** Session to a few days.
+
+**Exact external/new information:** Options-market-implied gold volatility (GVZ) — not
+derivable from GOLD's own OHLC/ATR.
+
+**Data source:** CBOE Gold ETF Volatility Index (GVZ), free historical daily data at
+cboe.com's index-data pages.
+
+**Data access A/B/C/D:** A/B — free historical daily download; real-time intraday
+dissemination would need a market-data vendor beyond MT5.
+
+**Automation feasibility:** HIGH for a daily-close version; MEDIUM if a real-time intraday
+GVZ feed is required.
+
+**Cost risk:** Low at daily granularity; unmeasured whether the signal clears GOLD's spread
+if used as a same-day trigger rather than a slower regime filter.
+
+**Main failure mode:** GVZ is derived from GLD (a US-listed equity-options market) with its
+own liquidity/positioning dynamics that may only loosely track the COMEX/spot gold Apex
+actually trades — a basis-risk failure mode distinct from ordinary signal noise.
+
+**Prior Apex overlap:** NONE. All prior volatility work used either GOLD/US100's own
+price-derived volatility or the already-closed NASDAQ-vol level/percentile regime
+(Candidate 3) — never a gold-specific options-implied series, and never an
+implied-minus-realized SPREAD construction.
+
+**Why genuinely different:** Gold-specific (not the already-rejected NASDAQ-vol
+construction), and uses the SPREAD (variance risk premium) rather than a raw level or
+percentile — the exact differentiated construction the closed Candidate-3 test's own
+language named as clearing the bar ("genuine options-positioning data").
+
+**Source citation:** Quantpedia "Volatility Risk Premium Effect" (aggregating Coval &
+Shumway, "Expected Option Returns," and related peer-reviewed sources) — grade A,
+"Confidence: Strong" per the aggregator's own label.
+
+**Falsifiable prediction:** GOLD's forward realized volatility and/or directional return
+show no statistically distinguishable relationship to the current GVZ-minus-realized-vol
+spread, once matched-controlled against GOLD's own recent volatility/momentum.
+
+**Minimum clean test:** Single pre-registered bucket/regression test — GVZ-minus-realized
+spread (daily) vs. GOLD forward return and forward realized vol — TRAIN/VALIDATION split,
+HAC + permutation, matched-control on GOLD's own volatility regime (same control structure
+that closed Candidate 3).
+
+**Score /50:** Source quality 4, Economic mechanism 4, New information 5, Causality 4,
+Automation 4, Data accessibility 4, Opportunity frequency 3, Cost headroom 4, Falsifiability
+5, Novelty vs Apex 5 — **42/50**.
+
+---
+
+## CANDIDATE 9
+
+**Mechanism:** The VIX/VXN futures term-structure SLOPE (not level) encodes the market's
+risk-neutral expectation of near-term volatility mean-reversion plus a variance risk
+premium. Per the cited source, the slope has documented forecast power for subsequent
+volatility-derivative returns. Persistent backwardation coincides with acute stress (forced
+de-risking/hedge demand), persistent contango with calm/complacent markets — a state that
+could plausibly condition how US100 responds to its own price signals.
+
+**Economic actor:** Volatility-derivatives dealers and hedgers (asset managers buying
+protection, funds selling vol for premium) whose aggregate positioning shapes the curve.
+
+**Forced/incentivized behavior:** Dealers must roll and rebalance vega/variance exposure
+along the curve; the resulting curve SHAPE reflects forward risk pricing, independent of
+any single actor's directional view.
+
+**Observable signal:** NASDAQ-linked implied-vol term-structure slope (front vs. longer-dated
+tenor); if a NASDAQ-specific futures curve isn't available, the broader VIX term structure
+as a market-wide risk-appetite proxy.
+
+**Instrument:** US100 (primary).
+
+**Expected frequency:** Daily state at minimum; more frequent if futures settlement data is
+used.
+
+**Holding horizon:** As a filter on an existing signal — same duration as the base rule; as
+a standalone bet, multi-day.
+
+**Exact external/new information:** Term-structure SLOPE of an external, non-US100-derived
+volatility index — not level, not derived from US100's own bars.
+
+**Data source:** CBOE VIX/VXN index levels and VX futures settlement prices — free at
+cboe.com's index-data and public futures-settlement pages.
+
+**Data access A/B/C/D:** B — free, no key, but assembling a genuine futures-implied term
+structure (not just the spot index level) is real engineering, and a NASDAQ-specific
+futures curve for VXN may not exist publicly, forcing reliance on the broader VIX curve as
+a compromise proxy.
+
+**Automation feasibility:** MEDIUM — needs an external feed merged by timestamp; no
+scraping/auth for the free CBOE downloads.
+
+**Cost risk:** None added as a filter; unmeasured as a standalone signal.
+
+**Main failure mode:** This is the candidate most exposed to the already-closed Candidate-3
+finding. If slope information correlates heavily with LEVEL (which Candidate 3 already
+showed carries ~zero incremental signal once matched-controlled against US100's own
+vol/momentum context), the slope construction risks failing the SAME matched-control gate
+for the SAME underlying reason — both ultimately reflect the same broad-market volatility
+regime. Must be tested with the identical matched-control discipline used to close
+Candidate 3, not assumed to pass on construction novelty alone.
+
+**Prior Apex overlap:** PARTIAL. Candidate 3 (VXN level/percentile regime) is closed. This
+is a materially different statistical object (slope vs. level — the exact variant the
+closed test's own language named as the standing bar a future candidate must clear), but
+shares the same underlying data series and the same closure risk.
+
+**Why genuinely different:** Explicitly the differentiated construction named as acceptable
+by the closed test's own stopping-rule language.
+
+**Source citation:** Quantpedia "Exploiting Term Structure of VIX Futures" (Simon &
+Campasano, EFMA conference paper) — grade A/B, source itself flags out-of-sample alpha
+decay.
+
+**Falsifiable prediction:** US100 forward return/volatility conditioned on the term-structure
+slope shows no statistically distinguishable difference from the unconditional distribution
+once matched-controlled against US100's own volatility/momentum context (identical control
+structure to the closed Candidate-3 test).
+
+**Minimum clean test:** Single pre-registered discovery test, slope (not level) as the
+conditioning variable, reusing the same TRAIN/VALIDATION infrastructure and matched-control
+gate from the closed Candidate-3 test.
+
+**Score /50:** Source quality 4, Economic mechanism 3, New information 3, Causality 3,
+Automation 3, Data accessibility 3, Opportunity frequency 3, Cost headroom 3, Falsifiability
+4, Novelty vs Apex 2 — **31/50**.
+
+---
+
+## CANDIDATE 10
+
+**Mechanism:** Options market makers who are net SHORT gamma (large open interest
+concentrated below spot) must hedge WITH the market's direction — buying as price rises,
+selling as it falls — mechanically amplifying moves. When net LONG gamma (large OI
+concentrated above spot, common near large expiry strikes), dealers hedge AGAINST the
+market's direction, dampening moves and often "pinning" price near large strikes. The
+aggregate NDX/QQQ options open-interest-by-strike distribution — not merely the OpEx
+calendar date used in the already-shortlisted Candidate 4 — determines an approximate
+"zero-gamma" price level whose CROSSING is the actual causal trigger, not the date alone.
+
+**Economic actor:** Options market makers/dealers holding large NDX/QQQ options inventories.
+
+**Forced/incentivized behavior:** Mechanical delta-hedging forced by dealers' own risk
+mandates, independent of any market view — the cleanest "forced trade" mechanism found in
+this pass.
+
+**Observable signal:** US100/QQQ price relative to an estimated zero-gamma flip level,
+computed from published options open interest by strike/expiry.
+
+**Instrument:** US100 (primary).
+
+**Expected frequency:** The flip level itself updates on the OpEx cycle (weekly/monthly),
+but price crossing it can happen intraday, plausibly several times/week — closer to target
+frequency than the pure calendar-date version.
+
+**Holding horizon:** Hours to a few days (regime persists roughly until the next large OI
+rebalancing).
+
+**Exact external/new information:** Options OPEN INTEREST by strike/expiry — genuine
+positioning data, neither price nor a calendar date.
+
+**Data source:** OCC (Options Clearing Corporation) daily volume/open-interest reports
+(public); CBOE end-of-day options data; QQQ/NDX options chains from a free-tier vendor.
+
+**Data access A/B/C/D:** C — publicly available in principle, but assembling a full
+strike-level OI snapshot and estimating a dealer-gamma profile is real data engineering, not
+a single CSV pull; genuine intraday updates likely require a paid options-data vendor.
+
+**Automation feasibility:** MEDIUM — the calendar-only version (Candidate 4) is trivial; this
+upgrade requires a real pipeline (daily OI ingestion, standard options-pricing-based
+dealer-gamma approximation per strike).
+
+**Cost risk:** Standard intraday spread exposure at a flip-level crossing; not structurally
+elevated.
+
+**Main failure mode:** The "zero-gamma flip" estimate is a MODEL, not a direct observation —
+dealers' net position sign by strike isn't disclosed, only aggregate OI is, so the sign/
+magnitude of dealer exposure is inferred, a real methodological assumption that could be
+wrong. Also: options OI is naturally available per-underlying (QQQ/NDX specifically) while
+Apex trades US100 as a CFD tracking the whole index — a basis-risk gap between the proxy
+and the actual options-referenced instrument.
+
+**Prior Apex overlap:** PARTIAL — directly upgrades the already-shortlisted-but-NOT-WORTHY
+Candidate 4 (OpEx calendar week effect), whose own stated weakness was "the true driver,
+dealer gamma exposure, isn't directly observable; only the calendar date is usable as a
+proxy." This candidate proposes closing exactly that gap with real OI data.
+
+**Why genuinely different:** Replaces a calendar-date PROXY with actual options-positioning
+data — the single most causally load-bearing upgrade found this pass, and a direct hit on
+the brief's dealer-gamma-exposure priority.
+
+**Source citation:** Same academic base as Candidate 4 — Stivers & Sun, "Returns and Option
+Activity over the Option-Expiration Week for S&P 100 Stocks" (cited by Quantpedia's
+option-expiration-week-effect entry), whose own "fundamental reason" section states the
+mechanism explicitly: "Hedge rebalancing by option market makers... is the main reason for
+the abnormal stock's returns."
+
+**Falsifiable prediction:** US100 realized volatility and directional persistence show no
+statistically distinguishable difference above vs. below the estimated zero-gamma flip
+level, once matched-controlled against calendar month (to isolate this from the
+already-flagged generic calendar-dominance artifact).
+
+**Minimum clean test:** Build the OI-derived flip-level estimate for a modest pilot window
+(not full history) as a discovery-only exercise — bucket US100 forward realized-vol/return
+by above/below-flip state, HAC + permutation, matched-control on calendar month.
+
+**Score /50:** Source quality 4, Economic mechanism 5, New information 5, Causality 3,
+Automation 2, Data accessibility 2, Opportunity frequency 4, Cost headroom 3, Falsifiability
+4, Novelty vs Apex 4 — **36/50**.
+
+---
+
+## CANDIDATE 11
+
+**Mechanism:** NASDAQ-100 index options price in a correlation-risk premium — the index's
+implied volatility trades rich relative to a volume/weight-blended implied volatility of its
+mega-cap constituents, because option writers demand compensation for correlation risk (the
+risk that constituent returns move together in a crash). The SIZE of that wedge (implied
+index correlation vs. realized/historical correlation) reflects how "crowded" or "dispersed"
+institutional positioning is across the index's small number of dominant mega-cap names —
+directly the "mega-cap concentration / constituent dispersion" mechanism named in the brief.
+
+**Economic actor:** Index-options dealers and volatility funds running systematic dispersion
+trades (short index vol, long single-name vol, or the reverse).
+
+**Forced/incentivized behavior:** Dealers price and rebalance the correlation-risk premium
+as a function of realized cross-constituent correlation and belief dispersion; large swings
+in the premium reflect real rebalancing flow, not discretionary judgment.
+
+**Observable signal:** NDX/QQQ implied volatility minus a weight-blended implied volatility
+of the top mega-cap constituents (an implied-correlation proxy).
+
+**Instrument:** US100 (primary), via its dominant constituents.
+
+**Expected frequency:** LOW per the source's own construction (monthly rebalance) — flagged
+explicitly, per the brief's own rule, rather than rejected outright for frequency.
+
+**Holding horizon:** Monthly as tested by the source; a daily/intraday reframing (does the
+wedge predict US100's next-day realized vol or directional persistence, rather than running
+the full dispersion trade) is a plausible but unmeasured extension.
+
+**Exact external/new information:** Cross-sectional options-market implied volatility (index
+vs. constituents) — genuinely different from any single-series price or volatility feature
+tested to date.
+
+**Data source:** Individual mega-cap equity options implied volatility (CBOE delayed
+quotes, free tier) plus NDX/QQQ index options implied volatility (CBOE, free tier).
+
+**Data access A/B/C/D:** C — each leg is individually quotable via free delayed data, but
+assembling and weighting several constituents' IV consistently, and maintaining the mapping
+as index weights change, is real ongoing engineering.
+
+**Automation feasibility:** MEDIUM — deterministic once the pipeline exists; the pipeline
+itself (multi-leg options IV collection + weighting) is nontrivial.
+
+**Cost risk:** Not evaluated at intraday granularity (source uses monthly rebalancing);
+unmeasured whether a daily/intraday reframing changes the cost picture.
+
+**Main failure mode:** NDX's true weighting includes far more names than a handful of
+mega-caps; using only the largest names as a proxy for "the index's constituent volatility"
+is itself an approximation that could miss the dispersion the mechanism claims to capture.
+
+**Prior Apex overlap:** NONE — no prior experiment has used cross-sectional single-name
+options data; prior "breadth"/"internals"-adjacent ideas were parked as data-infeasible
+(see rejected-concepts list, pass one, breadth-confirmation entry).
+
+**Why genuinely different:** Options-market, cross-sectional, correlation-risk-premium
+construction — none of these three elements (options data, cross-sectional, correlation
+premium) has been tested in any form before.
+
+**Source citation:** Quantpedia "Dispersion Trading" (Buraschi, Trojani, Vedolin,
+"Equilibrium Index and Single-Stock Volatility Risk Premia"; Driessen, Maenhout, Vilkov,
+"Option-Implied Correlations and the Price of Correlation Risk") — grade A, "Confidence:
+Strong."
+
+**Falsifiable prediction:** US100's forward realized volatility/return shows no
+statistically distinguishable relationship to the index-vs-constituent implied-vol wedge,
+once matched-controlled against US100's own volatility/momentum context.
+
+**Minimum clean test:** Single pre-registered discovery test using a small, frozen
+constituent basket (top-N by index weight, fixed before any result is seen) — bucket US100
+forward vol/return by wedge tercile, HAC + permutation, matched-control.
+
+**Score /50:** Source quality 4, Economic mechanism 4, New information 5, Causality 3,
+Automation 2, Data accessibility 2, Opportunity frequency 1, Cost headroom 3, Falsifiability
+4, Novelty vs Apex 5 — **33/50**.
+
+---
+
+## Second-pass summary table (rank order by /50 score)
+
+| # | Candidate | Instrument | Data access | Freq. | Score /50 |
+|---|---|---|---|---|---|
+| 7 | Real-yield (TIPS) impulse → GOLD allocator flow | GOLD | A | Daily | **43** |
+| 8 | GVZ implied-minus-realized vol spread | GOLD | A/B | Daily | **42** |
+| 10 | Dealer zero-gamma flip level (options OI) | US100 | C | Several/week | **36** |
+| 11 | Index-vs-constituent implied-vol dispersion wedge | US100 | C | Monthly | **33** |
+| 9 | VIX/VXN term-structure slope | US100 | B | Daily | **31** |
+
+## Rejected/parked concepts, this pass (logged so they aren't rediscovered)
+
+- **Gold options vs. gold futures, Indian MCX** (archive_r2 PDF) — a PhD research
+  *protocol* (no results yet), Indian MCX market, no falsifiable rule. REJECTED — no
+  operational content.
+- **"Essays in market microstructure — information content of quotes"** (archive_r2 PDF,
+  PhD dissertation synopsis) — generic order-driven-market quote theory. REJECTED — HIGH
+  overlap with the already-closed tick/quote-microstructure experiment; no gold/index-
+  specific mechanism.
+- **Market sentiment + overnight anomaly** (Quantpedia) — its VIX leg is a LEVEL/MA
+  condition (same construction as the closed Candidate 3), and one-third of its filter
+  relies on a proprietary paid sentiment indicator. REJECTED — no genuinely new,
+  accessible information source once the paid leg is dropped.
+- **"On options-driven realized volatility forecasting"** (arXiv, rough-volatility +
+  deep-learning HAR-RV model) — a pure forecasting-accuracy paper, no actor/mechanism
+  (fails the brief's own WHO/WHY standard). REJECTED as a standalone candidate; kept as
+  supporting evidence that option-implied volatility carries genuine incremental
+  information (relevant background for Candidate 8, not an independent candidate).
+- **"Clearing price distributions in call auctions"** (arXiv 1904.07583) — a real
+  order-flow-imbalance model for opening/closing auctions, matching the brief's auction-
+  imbalance priority exactly, but real-time NASDAQ-100-constituent auction-imbalance data
+  (Nasdaq's Net Order Imbalance Indicator) is not confirmed freely accessible. PARKED
+  (data infeasibility, not overlap) — re-check Nasdaq NOII free-tier access before
+  reviving.
+- **Option-expiration (OpEx) week effect, generic calendar-only form** — already logged
+  as shortlisted Candidate 4 in pass one; not re-counted as new here. Candidate 10 is the
+  positioning-data upgrade of this same concept.
+- **~15 of the 82 Quantpedia entries**: time-series/asset-class/currency/commodity
+  momentum, carry, and term-structure families — HIGH overlap, matches the already-closed
+  duplicate-elimination list (TSMOM, FX carry, commodity term structure). Bulk REJECTED.
+- **~25 of the 82 Quantpedia entries**: single-stock equity factors (accrual anomaly,
+  asset-growth effect, R&D-expenditure effect, net-payout-yield, short-interest effect,
+  earnings-announcement premium, etc.) — wrong instrument class entirely (Apex trades
+  GOLD/US100, not single-name equities). Bulk REJECTED, out-of-scope-instrument.
+- **Pairs-trading-with-stocks/country-ETFs, 13F alpha-cloning, soccer-club-stock
+  arbitrage** — out-of-scope instruments or unautomatable lag (13F filings are
+  quarterly). Bulk REJECTED.
+- **Calendar-seasonality Quantpedia entries** (turn-of-month, January effect, pre-holiday
+  effect, payday anomaly, Ramadan effect) — squarely "another session/another calendar
+  bucket" on OHLC, the exact pattern the research-state's calendar-dominance finding
+  already warns against. Bulk REJECTED per the brief's own anti-duplication rule.
+- **Generic strategy-compendium books** (`151-trading-strategies`, `51-trading-strategies`,
+  Wilder *New Concepts*, Pring *On Market Momentum*, Stridsman *Trading Systems That
+  Work*) — indicator/pattern-catalog families, HIGH overlap with the already-closed
+  indicator-catalog and candlestick audits. Bulk REJECTED, no new angle found.

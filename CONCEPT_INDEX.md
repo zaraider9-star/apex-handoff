@@ -137,3 +137,102 @@ research aggregator) has not yet been digested/summarized and is largely unread.
 future pass should process that backlog — weighted toward macro/volatility/carry/
 commodity topics, the areas most likely to contain a genuinely new information source —
 before mining it for candidates.
+
+---
+
+# SECOND PASS — 2026-08-20 — 730-document backlog screen
+
+Coverage this pass: the previously-flagged unread ~730-document expansion
+(`archive_r2/` 108 files, `arxiv/` 516 files, `qp_papers/` 22 files, `quantpedia/` md 82
+files) screened hierarchically — folder/title index, harvest-log grep for priority
+keywords (gamma, dealer, open interest, skew, term structure, breadth, real yield, auction
+imbalance, etc.), abstract/conclusion read for keyword hits, deeper read only for
+survivors. No full-document ingestion; no backtest run.
+
+## F. Rates / macro-surprise (NEW information source class)
+
+22. **Real-yield (TIPS) impulse as GOLD's opportunity-cost driver** — 10Y real Treasury
+    yield (FRED DFII10, grade A/free data, general macro-finance literature not located
+    inside this pass's corpus — flagged honestly). NONE overlap — no prior experiment used
+    a rates/yield series. → SHORTLISTED (Candidate 7).
+
+## G. Gold-specific options-market information (NEW information source class)
+
+23. **GVZ (CBOE Gold ETF Volatility Index) implied-minus-realized volatility spread** —
+    options-market-implied gold volatility vs. GOLD's own trailing realized vol (Quantpedia
+    volatility-risk-premium-effect, grade A). NONE overlap — prior work never used a
+    gold-specific options-implied series nor an implied-minus-realized spread. →
+    SHORTLISTED (Candidate 8).
+
+## H. Index-options positioning / internals (NEW information source class, upgrades a
+    prior calendar-only proxy)
+
+24. **VIX/VXN term-structure SLOPE (contango/backwardation) as a US100 regime filter** —
+    Quantpedia exploiting-term-structure-of-vix-futures (Simon & Campasano, grade A/B,
+    self-reports OOS decay). PARTIAL overlap — same underlying data series as the closed
+    Candidate 3 (VXN level/percentile), differentiated by using the curve SLOPE rather than
+    level, the exact variant the closed test's own language named as clearing the bar. Real
+    risk this fails the identical matched-control gate for the identical underlying reason.
+    → SHORTLISTED with explicit overlap-risk flag (Candidate 9).
+25. **Dealer zero-gamma flip level from published options open interest** — upgrades the
+    already-shortlisted-but-NOT-WORTHY OpEx calendar-week candidate (#3 in the prior pass)
+    by replacing the calendar-date PROXY with actual OI-derived positioning data (Stivers &
+    Sun via Quantpedia option-expiration-week-effect, grade A). PARTIAL overlap (same
+    underlying mechanism as the existing candidate) but closes its explicitly stated data
+    gap. → SHORTLISTED (Candidate 10).
+26. **Index-vs-constituent implied-volatility dispersion wedge (correlation risk premium)**
+    — NDX/QQQ implied vol vs. mega-cap constituent implied vol (Quantpedia
+    dispersion-trading, citing Buraschi/Trojani/Vedolin and Driessen/Maenhout/Vilkov, grade
+    A). NONE overlap — no prior experiment used cross-sectional single-name options data.
+    LOW frequency (monthly per source), flagged not rejected. → SHORTLISTED (Candidate 11).
+
+## Rejected/parked this pass (compact, so not rediscovered)
+
+27. Gold options vs. gold futures, Indian MCX (archive_r2 PDF, `sgng.14881`) — PhD research
+    *protocol* only (no results), wrong market (MCX not COMEX/spot). REJECTED, no
+    operational content.
+28. "Essays in market microstructure — information content of quotes" (archive_r2 PDF,
+    `sgng.9997`) — generic order-driven-market quote theory, PhD dissertation synopsis.
+    REJECTED, HIGH overlap with the closed tick/quote-microstructure experiment (EXP007),
+    no gold/index-specific mechanism.
+29. Market sentiment + overnight anomaly (Quantpedia) — VIX leg is a LEVEL/MA condition
+    (same construction as closed Candidate 3); one-third of the filter needs a proprietary
+    paid sentiment indicator (Brain Market Sentiment). REJECTED, no new accessible info
+    source once the paid leg is dropped.
+30. "On options-driven realized volatility forecasting" (arXiv, rough-vol + deep-learning
+    HAR-RV model) — pure forecasting-accuracy paper, no WHO/WHY actor mechanism. REJECTED
+    as standalone (fails criterion 7's mechanism standard); kept as supporting evidence for
+    #23 only.
+31. "Clearing price distributions in call auctions" (arXiv 1904.07583) — real order-flow-
+    imbalance auction model, matches the brief's auction-imbalance priority exactly, but
+    real-time NASDAQ-100-constituent imbalance data (Nasdaq NOII) not confirmed freely
+    accessible. PARKED (data infeasibility, not overlap) — re-check before reviving.
+32. ~15 Quantpedia entries: time-series/asset-class/currency/commodity momentum and carry
+    families — HIGH overlap with the already-closed duplicate-elimination list (TSMOM, FX
+    carry, commodity term structure). Bulk REJECTED.
+33. ~25 Quantpedia entries: single-stock equity factors (accrual anomaly, asset-growth
+    effect, R&D-expenditure effect, net-payout-yield, short-interest effect, earnings-
+    announcement premium, etc.) — wrong instrument class (Apex trades GOLD/US100, not
+    single-name equities). Bulk REJECTED, out-of-scope-instrument.
+34. Pairs-trading-with-stocks/country-ETFs, 13F alpha-cloning, soccer-club-stock arbitrage
+    — out-of-scope instruments or unautomatable lag (13F is quarterly). Bulk REJECTED.
+35. Calendar-seasonality Quantpedia entries (turn-of-month, January effect, pre-holiday
+    effect, payday anomaly, Ramadan effect) — "another calendar bucket" on OHLC, exactly
+    what the calendar-dominance finding already warns against. Bulk REJECTED per the
+    brief's own anti-duplication rule.
+36. Generic strategy-compendium books (`151-trading-strategies`, `51-trading-strategies`,
+    Wilder *New Concepts in Technical Trading Systems*, Pring *On Market Momentum*,
+    Stridsman *Trading Systems That Work*) — indicator/pattern-catalog families, HIGH
+    overlap with the closed indicator-catalog and candlestick audits. Bulk REJECTED.
+
+## Tally, second pass
+
+- Concepts extracted: **15** (#22-36)
+- Carried to shortlist: **5** (#22, #23, #24, #25, #26 → Candidates 7-11)
+- Rejected/parked, individually reasoned: **5** (#27-31)
+- Rejected, bulk (grouped by family): **5 groups, ~65 individual entries** (#32-36)
+- Documents screened this pass: 728 titles/metadata indexed (108 archive_r2 + 516 arxiv +
+  22 qp_papers + 82 quantpedia); abstract/conclusion read for ~14 keyword-hit survivors;
+  full read for none (all resolved at abstract/conclusion depth). ~444 documents from the
+  PRE-existing (pass-one) library remain covered only by the pass-one 66-source spot
+  inspection, not re-read this pass.
