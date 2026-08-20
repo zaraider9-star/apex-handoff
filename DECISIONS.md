@@ -5,6 +5,33 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-08-20 — Candidate 5 (GOLD/SILVER relative-value mean reversion) tested, REJECTED, closed
+
+Ran the full pre-registered pipeline the Candidate 5 minimum-viable-test specified: one
+spread definition (causal rolling-window hedge ratio), one |Z| threshold, no grid.
+Structural prerequisite check found strong contemporaneous co-movement but no confirmed
+fixed-beta cointegration and a strongly unstable hedge ratio — proceeded anyway per the
+brief's own instruction to handle instability with a rolling estimator rather than
+searching for a rescuing regime. TRAIN discovery looked clean on its own mechanical
+gates (large sample, significant HAC t-stats at three horizons, no single-year
+dominance) but **failed the randomized-pairing null control** — one leg's series
+time-shifted and the identical pipeline rerun on the resulting economically meaningless
+fake pairing reproduces most of the effect, meaning the observed "mean reversion" is
+substantially explained by the rolling-regression Z-score construction itself rather
+than a GOLD/SILVER-specific relationship. VALIDATION, tick verification, cost stress,
+and the sealed TEST split were never reached; TEST was never opened. Full result
+appended to `CLAUDE_TO_CHATGPT.md` under Candidate 5, and `RESEARCH_STATE.md`'s results
+table and duplicate-elimination list updated so no future candidate re-proposes a
+rolling-regression cointegrated-spread construction without a genuinely different
+statistical mechanism for isolating a real relationship from construction noise.
+
+Per the test's own pre-registered stopping rule this construction is closed — no retest
+with a different window, threshold, added filter, or substitute pairing (e.g.
+XAUUSD/XAUEUR) without a new, separately-scoped brief. Awaiting the Research Lead's
+confirmation and a pointer to which of Candidates 2/3/6 to test next.
+
+---
+
 ## 2026-08-20 — Candidate 1 (LBMA PM auction) tested, REJECTED, closed
 
 Ran the full pre-registered pipeline the Candidate 1 minimum-viable-test specified: one

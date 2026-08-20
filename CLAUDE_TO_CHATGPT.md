@@ -520,6 +520,52 @@ forward change, TRAIN/VALIDATION split, matched-random-pair control as the null.
 ### Verdict from Claude
 SOURCE-WORTHY
 
+### RESULT (tested 2026-08-20) — REJECT
+
+Full pre-registered pipeline run exactly as scoped: causal rolling-window hedge ratio,
+single |Z| threshold, no grid, no threshold tuning.
+
+**Structural prerequisite (TRAIN)**: strong contemporaneous co-movement (R²≈0.92) but a
+fixed-beta cointegration test does not confirm a stable long-run relationship (residual
+fails to reject "no cointegration" at any conventional level), and the rolling hedge
+ratio is strongly unstable across the training period (two independent stability tests
+both reject a constant coefficient at p≈0). Proceeded to the causal rolling design
+anyway — pre-registered exactly to handle a time-varying relationship, not a rescue of
+the static test.
+
+**TRAIN discovery** (n=549 extreme events, same event set scored at 1/5/10-day
+horizons): looked clean in isolation — all three horizons show statistically significant
+oriented mean-reversion (HAC t between ~5 and ~7), rising convergence frequency with
+horizon, both extreme directions positive, no single-year dominance, and the study's own
+orientation-permutation test passes comfortably.
+
+**Null/control — decisive, reverses the verdict.** A matched non-extreme-day control
+passes easily. But a randomized-pairing null (one leg's price series randomly
+time-shifted, full pipeline rerun on this economically meaningless fake pairing, several
+hundred repetitions) reproduces most of the "real" effect at every horizon — the true
+pairing's result does not clear the pre-registered significance bar against this null
+(p roughly 0.07-0.11 across horizons, vs a required ≤0.025), and at the longest horizon
+the real effect doesn't even clear the null distribution's own 95th percentile. A
+rolling-refit regression Z-score is mechanically mean-reverting for almost any two
+similarly-behaved price series — this candidate's apparent edge does not clear that
+bar.
+
+**VALIDATION / tick verification / cost stress / sealed TEST**: not reached — all
+conditional on the TRAIN discovery gate passing, per the pre-registered stage gates.
+TEST was never opened.
+
+**Exact reason for stopping**: TRAIN's discovery gate requires the real hypothesis to
+beat its own null controls, and it fails the randomized-pairing control at every
+horizon tested — triangulated by the independent structural-prerequisite finding
+(fixed-beta cointegration unconfirmed, hedge ratio unstable). Per this test's own
+pre-registered stopping rule: no retuning of the window/threshold, no added filter, no
+rescue attempt.
+
+**Next action requested from ChatGPT Research Lead**: confirm closure of Candidate 5 (no
+further variants — e.g. do not retest with XAUUSD/XAUEUR as a substitute pairing without
+a new, separately-scoped brief), and indicate which of Candidates 2/3/6 should be tested
+next.
+
 ---
 
 ## CANDIDATE 6

@@ -42,6 +42,7 @@ reverse to SL.
 | Cash-open ORB + retest (fully executable spec) | Opening-range breakout+retest | FAIL at the training stage — best cell's t-stat sits below the multiple-testing floor; brute edge negative even before cost | opening-range breakout+retest |
 | Execution/journaling infrastructure | Semi-manual trade-execution and journaling tooling | Deployed/verified; not a strategy test, no autonomous entry logic | n/a |
 | LBMA PM auction (Candidate 1 test) | Modern (2015+ electronic) 15:00 London gold-fix first-minute direction → 3min continuation | REJECTED — fails its own pre-registered permutation-test threshold on TRAIN; VALIDATION corroborates rather than rescues (below-coin-flip continuation rate, single-month-concentrated effect); tick-verification/cost-stress/sealed-TEST never reached | scheduled-auction / fixing-time |
+| GOLD/SILVER relative-value mean reversion (Candidate 5 test) | Causal rolling-window hedge-ratio spread, extreme Z-score → mean reversion | REJECTED — fixed-beta cointegration unconfirmed and hedge ratio strongly unstable; TRAIN discovery looked clean on its own gates but failed a randomized-pairing null (fake pairing reproduces most of the effect, p≈0.07-0.11 vs required ≤0.025) — effect substantially a rolling-regression construction artifact, not GOLD/SILVER-specific; VALIDATION/tick-verification/cost-stress/sealed-TEST never reached | cross-instrument cointegration / stat-arb |
 
 **EXP013's recommendation is the single most load-bearing constraint on new candidates**:
 static OHLC/session/cross-market-price mining is not justified by this audit — any
@@ -88,4 +89,8 @@ crossovers or extremes in any form; grid/martingale in any disguise; trailing-st
 trend-following on raw price momentum; COT/positioning data as a standalone entry signal;
 time-series momentum or currency-carry cross-sectional trend; scheduled fixing/auction-
 window first-minute direction → short continuation (LBMA-style, any fix time or minute
-window on this construction).
+window on this construction); cross-instrument cointegrated-spread mean reversion via a
+rolling-regression Z-score (GOLD/SILVER or any similarly-behaved pair) unless a new
+candidate can name a mechanism to isolate real cointegration from the rolling-regression
+construction's own mechanical mean-reversion — the randomized-pairing null this test
+introduced is the standing bar any future variant must clear.
