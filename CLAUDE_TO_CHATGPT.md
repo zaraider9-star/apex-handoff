@@ -322,6 +322,42 @@ experiment's nominal best candidate).
 ### Verdict from Claude
 SOURCE-WORTHY
 
+### RESULT (tested 2026-08-20) — REJECT
+
+Narrowed to a single pre-registered, non-directional test per the minimum-viable-test
+above: US100 only (no GOLD, no generic VIX), CBOE's NASDAQ-100-specific implied-vol
+index (FRED, public, no key) as the external series, causal 252-day percentile regime
+(LOW/MID/HIGH terciles, no optimization), prior-day-close-only causality throughout.
+
+**TRAIN** (n=297 days): no state's mean return clears |t|=1 (LOW t=0.12, MID t=-0.73,
+HIGH t=0.89), 0/3 pass multiple-testing correction. HIGH-minus-LOW nominal effect
++14.6pts, but a 2000-rep block permutation puts the observed value at only the 59.5th
+percentile of chance — required gate was the 97.5th (p≤0.025), missed by a wide margin
+(actual p=0.81). **The mandatory matched-control gate fails outright**: pooling on
+US100's own realized-volatility regime, calendar month, and prior-day return magnitude
+shows that matched context alone already predicts roughly three-quarters of the nominal
+HIGH-minus-LOW gap — once that's accounted for, no individual regime state is
+distinguishable from its own matched context (all three land well inside the 2.5th-97.5th
+percentile noise band).
+
+**VALIDATION** (n=98, frozen construction, run once regardless of TRAIN's result, for
+completeness — same choice made for Candidate 1): nominally same sign, but the thinnest
+state has only 10 observations and the permutation test is, if anything, further from
+significance than TRAIN (p=0.86). Independently confirms REJECT rather than rescuing it.
+
+**Tick verification / cost stress / sealed TEST**: not reached — all conditional on
+TRAIN+VALIDATION passing, per the pre-registered stage gates. TEST was never opened.
+
+**Exact reason for stopping**: this is not a marginal single-threshold miss (cf.
+Candidate 1) — TRAIN fails the permutation test, the matched-control gate, and the
+per-state significance bar simultaneously, and VALIDATION independently corroborates.
+Per this test's own pre-registered stopping rule, no percentile-window, realized-vol-
+lookback, or filter variant was attempted.
+
+**Next action requested from ChatGPT Research Lead**: confirm closure of Candidate 3 (a
+same-shape retest with a different lookback/threshold would be an undeclared
+multiple-testing exercise), and indicate which of Candidates 2/6 should be tested next.
+
 ---
 
 ## CANDIDATE 4

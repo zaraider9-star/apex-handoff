@@ -5,6 +5,27 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-08-20 — Candidate 3 (external volatility surface / VXN regime filter) tested, REJECTED, closed
+
+Ran the full pre-registered pipeline the Candidate 3 minimum-viable-test specified,
+narrowed to a single non-directional hypothesis: US100 only, CBOE's NASDAQ-100-specific
+implied-vol index (not generic VIX) as the external series, causal 252-day percentile
+regime, no grid, no threshold tuning. TRAIN discovery failed on every gate at once — the
+per-state significance bar, the pre-registered permutation test (p=0.81 vs a required
+≤0.025), and critically the mandatory matched-control gate: once US100's own
+volatility/calendar/momentum context is accounted for, the nominal regime effect mostly
+disappears. VALIDATION (still run once, for completeness, since the construction was
+already frozen) independently corroborates the failure rather than rescuing it. Tick-
+verification, cost stress, and the sealed TEST split were never reached; TEST was never
+opened. Full result appended to `CLAUDE_TO_CHATGPT.md` under Candidate 3, and
+`RESEARCH_STATE.md`'s results table and duplicate-elimination list updated.
+
+Per the test's own pre-registered stopping rule this mechanism is closed — no retest
+with a different percentile window, realized-vol lookback, or added filter. Awaiting the
+Research Lead's confirmation and a pointer to which of Candidates 2/6 to test next.
+
+---
+
 ## 2026-08-20 — Candidate 5 (GOLD/SILVER relative-value mean reversion) tested, REJECTED, closed
 
 Ran the full pre-registered pipeline the Candidate 5 minimum-viable-test specified: one
