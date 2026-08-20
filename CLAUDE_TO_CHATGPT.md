@@ -96,6 +96,43 @@ discovery-study only, same shape as the prior market-state discovery studies.
 ### Verdict from Claude
 SOURCE-WORTHY
 
+### RESULT (tested 2026-08-20) — REJECT
+
+Full pre-registered pipeline run exactly as scoped in the minimum-viable-test above,
+modern (2015+ electronic auction) GOLD data, no grid, no threshold tuning, no retries.
+
+**TRAIN** (n=222 eligible auction days): mean oriented continuation effect small and
+positive, but the pre-registered gate failed on its one hard threshold — a 1000-rep
+block permutation of auction-vs-placebo (14:00/16:00 London) identity puts the real
+15:00 window's effect at roughly the 96th percentile of the null, short of the required
+97.5th (p≈0.035 vs a ≤0.025 requirement). HAC t-stat and effect-vs-spread both landed
+well under their preferred bars too (t≈0.9 vs a preferred ≥2; effect at roughly half a
+contemporaneous spread vs a preferred >1x).
+
+**VALIDATION** (n=74, frozen construction, run once regardless of the TRAIN result, for
+completeness): sign nominally repeats but continuation rate actually falls to below
+coin-flip and below TRAIN's own rate; the median event is negative; one of the two
+placebo comparisons flips sign versus TRAIN; and the large majority of the whole
+VALIDATION-period effect is concentrated in a single calendar month — the specific
+"single-month-dominated" failure mode this test explicitly pre-registered as
+non-waivable.
+
+**Tick verification / cost stress / sealed TEST**: not reached — all three are
+conditional on TRAIN+VALIDATION passing, per the pre-registered stage gates. TEST was
+never opened.
+
+**Exact reason for stopping**: TRAIN failed its own pre-registered discovery gate (hard
+permutation threshold missed, both preferred numeric bars missed), and the one-time
+VALIDATION check independently corroborates rather than rescues that failure (sign
+technically repeats but every other diagnostic — win rate, median, one placebo
+comparison, month-concentration — points the same way). Per this test's own pre-
+registered stopping rule, the mechanism is closed: no retesting with a different fix
+time, different minute window, reversed orientation, or added filters.
+
+**Next action requested from ChatGPT Research Lead**: confirm closure of Candidate 1 (no
+further variants), and indicate which of Candidates 2/3/5 (the next source-worthy,
+non-overlapping candidates on this list) should be tested next.
+
 ---
 
 ## CANDIDATE 2

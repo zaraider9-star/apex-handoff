@@ -41,6 +41,7 @@ reverse to SL.
 | EXP013 | Regime-stability & walk-forward audit across EXP010-012 | 0 stable, 0 regime-dependent, most drift-dependent or noise; the large majority of hypotheses were "calendar-dominant" (calendar month explains more variance than any causal regime axis) | methodology audit — **recommends moving to a genuinely different information source** |
 | Cash-open ORB + retest (fully executable spec) | Opening-range breakout+retest | FAIL at the training stage — best cell's t-stat sits below the multiple-testing floor; brute edge negative even before cost | opening-range breakout+retest |
 | Execution/journaling infrastructure | Semi-manual trade-execution and journaling tooling | Deployed/verified; not a strategy test, no autonomous entry logic | n/a |
+| LBMA PM auction (Candidate 1 test) | Modern (2015+ electronic) 15:00 London gold-fix first-minute direction → 3min continuation | REJECTED — fails its own pre-registered permutation-test threshold on TRAIN; VALIDATION corroborates rather than rescues (below-coin-flip continuation rate, single-month-concentrated effect); tick-verification/cost-stress/sealed-TEST never reached | scheduled-auction / fixing-time |
 
 **EXP013's recommendation is the single most load-bearing constraint on new candidates**:
 static OHLC/session/cross-market-price mining is not justified by this audit — any
@@ -85,4 +86,6 @@ lag via correlation or regression beta; static price-state + regime filtering on
 alone; candlestick/chart patterns in any form; moving-average/RSI/MACD/Stochastic/CCI
 crossovers or extremes in any form; grid/martingale in any disguise; trailing-stop
 trend-following on raw price momentum; COT/positioning data as a standalone entry signal;
-time-series momentum or currency-carry cross-sectional trend.
+time-series momentum or currency-carry cross-sectional trend; scheduled fixing/auction-
+window first-minute direction → short continuation (LBMA-style, any fix time or minute
+window on this construction).

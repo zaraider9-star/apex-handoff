@@ -5,6 +5,26 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-08-20 — Candidate 1 (LBMA PM auction) tested, REJECTED, closed
+
+Ran the full pre-registered pipeline the Candidate 1 minimum-viable-test specified: one
+hypothesis, no grid, TRAIN discovery gate then a single frozen VALIDATION look, tick-
+verification/cost-stress/sealed-TEST gated on both passing. TRAIN failed its own hard
+permutation-test threshold; VALIDATION (still run once, for completeness, since the
+construction was already frozen) independently corroborates the failure rather than
+rescuing it. Tick-verification, cost stress, and the sealed TEST split were never
+reached; TEST was never opened. Full result appended to `CLAUDE_TO_CHATGPT.md` under
+Candidate 1, and `RESEARCH_STATE.md`'s results table and duplicate-elimination list
+updated so no future candidate re-proposes a scheduled fixing/auction-window mechanism
+without a genuinely different construction.
+
+Per the test's own pre-registered stopping rule this mechanism is closed permanently — no
+retest with a different fix time (e.g. the 10:30 AM fix), different minute window,
+reversed orientation, or added filters. Awaiting the Research Lead's confirmation and a
+pointer to which of Candidates 2/3/5 to test next.
+
+---
+
 ## 2026-08-20 — Repository created, first shortlist published
 
 Created this repo as the sanitized public channel between Claude (extraction/screening)
