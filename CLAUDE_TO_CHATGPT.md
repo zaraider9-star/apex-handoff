@@ -1034,6 +1034,34 @@ that closed Candidate 3).
 Automation 4, Data accessibility 4, Opportunity frequency 3, Cost headroom 4, Falsifiability
 5, Novelty vs Apex 5 — **42/50**.
 
+### PRE-REGISTRATION (2026-11-24, owner protocol) — committed BEFORE GVZ/VXN/NDX data was downloaded
+
+Honesty note: GOLD prices (GLD) were already used in the Candidate 7 test; the implied-vol
+series and all US100 data have not been downloaded yet. Same engine, gates G1-G9, cost
+model, SL rule, timing lag, random-entry control, Holm family (m = 9), walk-forward, Monte
+Carlo and stopping rule as the Candidate 7 pre-registration, except where stated below.
+
+**Hypothesis.** Volatility-risk-premium compensation (Bollerslev-Tauchen-Zhou direction):
+when gold's option-implied volatility is unusually far above its realized volatility, the
+premium for bearing gold risk is unusually high and subsequent GOLD returns are higher;
+unusually low premium → lower returns. Direction fixed by the mechanism.
+
+**Data.** FRED `GVZCLS` (CBOE Gold ETF Volatility Index, daily close); GLD daily OHLC
+(as in Candidate 7); FRED `DFF`. Cross-symbol: FRED `VXNCLS` + Yahoo `^NDX`
+(fallback `VIXCLS` if `VXNCLS` is unavailable).
+
+**Signal.** RV_N(t) = stdev of the last N daily log returns of the instrument's close ×
+√252 × 100. VRP(t) = implied(t) − RV_N(t). z(t) = (VRP(t) − mean) / stdev over the
+trailing 252 VRP observations. Direction d = sign(z). Signal dated t is first tradable at
+the close of the next trading day.
+
+**Grid (IS 2020-2022).** N ∈ {10, 21, 63} × H ∈ {1, 5, 20} = 9 configs; selection = highest
+IS net PF in R with ≥ 30 IS trades.
+
+**G6 cross-symbol (replaces silver).** Identical frozen N, H on US100 with VXN as the
+implied series; OOS net PF > 1.0. US100 cost model: 2.0 index points round trip; swap
+long pays (DFF + 2.5%)/360, short receives (DFF − 2.5%)/360 per calendar night.
+
 ---
 
 ## CANDIDATE 9
@@ -1112,6 +1140,38 @@ gate from the closed Candidate-3 test.
 **Score /50:** Source quality 4, Economic mechanism 3, New information 3, Causality 3,
 Automation 3, Data accessibility 3, Opportunity frequency 3, Cost headroom 3, Falsifiability
 4, Novelty vs Apex 2 — **31/50**.
+
+### PRE-REGISTRATION (2026-11-24, owner protocol) — committed BEFORE VIX/VIX3M/NDX data was downloaded
+
+Same engine, gates G1-G9, SL rule, timing lag, random-entry control, Holm family (m = 9),
+walk-forward, Monte Carlo and stopping rule as the Candidate 7 pre-registration, except
+where stated below. Must clear the same bar that closed Candidate 3 — here that bar is the
+random-entry control with matched trade count, since the rule is long/flat.
+
+**Hypothesis.** VIX futures-curve shape as a risk-appetite state: in contango (front
+implied vol below 3-month implied vol) dealers and hedgers price calm and US100 earns its
+drift; in backwardation (acute stress, forced de-risking) the drift is not paid. Rule is
+long/flat: long US100 only in contango, flat in backwardation. No short leg (not tested,
+not to be added later).
+
+**Data.** FRED `VIXCLS`, `VXVCLS` (CBOE S&P 500 3-Month Volatility Index), `DFF`; Yahoo
+`^NDX` daily OHLC. Cross-symbol: Yahoo `^GSPC`.
+
+**Signal.** ratio(t) = VIX(t) / VIX3M(t); S_M(t) = mean of the last M ratios. d = +1 if
+S_M(t) < 1.0, else 0. The 1.0 boundary is the definition of contango vs backwardation,
+not a fitted threshold. Signal dated t is first tradable at the close of the next
+trading day.
+
+**Grid (IS 2020-2022).** M ∈ {1, 5, 10} × H ∈ {1, 5, 20} = 9 configs; selection = highest
+IS net PF in R with ≥ 30 IS trades.
+
+**Costs.** US100: 2.0 index points round trip; US500 (G6): 0.6 points round trip; swap
+long pays (DFF + 2.5%)/360 per calendar night. Cost stress: points ×2, markup ×2.
+
+**Random-entry control.** All trades long (matched count), random non-overlapping entry
+days inside OOS — tests whether the contango timing beats buying US100 at random.
+
+**G6 cross-symbol.** Identical frozen M, H on US500 (`^GSPC`); OOS net PF > 1.0.
 
 ---
 
