@@ -912,6 +912,52 @@ gold–real-yield link is mainly contemporaneous (priced the same day), and it i
 reported to have weakened from 2022 as central-bank buying decoupled gold from real rates —
 the OOS window sits entirely inside that period. A lagged daily rule may have nothing left.
 
+### RESULT (tested 2026-11-24) — REJECT
+
+Run exactly as pre-registered (commit 217ce3a precedes every data download). Data: FRED
+`DFII10`, `DFF`; GOLD/SILVER daily OHLC from Yahoo Finance via the GLD / SLV ETFs
+(spot-tracking, no futures-roll gaps), with GC=F / SI=F closes used only to convert the
+$/oz cost model into a fraction of notional. Substitution reason: the pre-registered
+XAUUSD/XAGUSD source (Stooq) now blocks automated download behind a JavaScript check.
+GOLD data 2019-01-02 → 2026-11-17. Implementation details the pre-registration left
+open, fixed before the run: PF measured in R (matches 1%-risk sizing), re-entry allowed at
+the exit-day close, cost stress = spread ×2 and swap markup ×2. 10,000 simulations per
+random control, fixed seed.
+
+**All 9 configs, OOS 2023-01-01 → 2026-11-17 (net PF in R, random-entry p):**
+L1/H1 0.83 (p 0.89) · L1/H5 1.19 (0.14) · L1/H20 0.88 (0.81) · L5/H1 0.92 (0.51) ·
+L5/H5 0.93 (0.61) · **L5/H20 1.30 (0.15)** · L20/H1 0.87 (0.71) · L20/H5 0.96 (0.44) ·
+L20/H20 0.97 (0.45). Holm (m=9): no config significant. 6 of 9 configs lose OOS.
+
+**IS-selected config L=5, H=20** (IS PF 1.31, 53 trades):
+
+| Gate | Value | |
+|---|---|---|
+| G1 OOS PF > 1.15 | 1.30 | pass |
+| G2 OOS trades ≥ 30 | 70 | pass |
+| G3 random-entry p < 0.05 | 0.147 | **FAIL** |
+| G4 Holm-significant | no | **FAIL** |
+| G5 neighbours PF > 1.0 (≥ 2/3) | 0.88 / 0.97 / 0.93 — 0 of 3 | **FAIL** |
+| G6 XAGUSD OOS PF > 1.0 | 1.13 | pass |
+| G7 walk-forward PF > 1.10 | 0.985 | **FAIL** |
+| G8 MC 95th-pct max DD ≤ 15% | 16.4% | **FAIL** |
+| G9 2× cost PF > 1.0 | 1.19 | pass |
+
+**Diagnostics.** HAC t = 1.27. Long leg PF 2.66 (31 trades), short leg PF 0.55 (39) —
+inside an OOS window where GOLD rose +106%. By year: 2023 PF 0.77, 2024 0.84, 2025 1.68,
+2026 2.87 — the whole OOS profit comes from the last two years of the bull leg. The
+fresher same-day-timing variant is worse (PF 0.77), the opposite of what a real
+information effect would show.
+
+**Exact reason for stopping.** The nominal OOS PF of 1.30 is a single isolated parameter
+cell riding gold's drift: it does not beat random entries with the same long/short mix
+(p = 0.147), no config survives Holm, all three grid neighbours lose, anchored
+walk-forward loses, and the profit sits in 2025-2026 only. This is exactly the
+"passes on one parameter set / one period" pattern the protocol rejects. Per the
+pre-registered stopping rule the construction is closed: no retest with other lookbacks,
+thresholds, filters, holding periods, or substitute real-yield series (breakeven-derived,
+5Y TIPS, etc.).
+
 ---
 
 ## CANDIDATE 8

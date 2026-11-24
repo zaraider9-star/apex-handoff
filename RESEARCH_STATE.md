@@ -43,6 +43,7 @@ reverse to SL.
 | Execution/journaling infrastructure | Semi-manual trade-execution and journaling tooling | Deployed/verified; not a strategy test, no autonomous entry logic | n/a |
 | LBMA PM auction (Candidate 1 test) | Modern (2015+ electronic) 15:00 London gold-fix first-minute direction → 3min continuation | REJECTED — fails its own pre-registered permutation-test threshold on TRAIN; VALIDATION corroborates rather than rescues (below-coin-flip continuation rate, single-month-concentrated effect); tick-verification/cost-stress/sealed-TEST never reached | scheduled-auction / fixing-time |
 | GOLD/SILVER relative-value mean reversion (Candidate 5 test) | Causal rolling-window hedge-ratio spread, extreme Z-score → mean reversion | REJECTED — fixed-beta cointegration unconfirmed and hedge ratio strongly unstable; TRAIN discovery looked clean on its own gates but failed a randomized-pairing null (fake pairing reproduces most of the effect, p≈0.07-0.11 vs required ≤0.025) — effect substantially a rolling-regression construction artifact, not GOLD/SILVER-specific; VALIDATION/tick-verification/cost-stress/sealed-TEST never reached | cross-instrument cointegration / stat-arb |
+| Real-yield impulse on GOLD (Candidate 7 test, owner protocol) | Lagged change in 10Y TIPS real yield (FRED DFII10) → opposite-direction GOLD position, 1-20 day hold, 2×ATR SL, IS 2020-2022 / OOS 2023-2026 | REJECTED — IS-selected cell reaches OOS PF 1.30 but fails random-entry control (p=0.147), Holm (0 of 9 configs significant), neighbour robustness (0/3 neighbours PF>1), walk-forward (PF 0.985) and MC drawdown (16.4%); 6 of 9 configs lose OOS; profit is long-side drift in 2025-2026 only | rates / opportunity-cost macro signal |
 | External volatility regime filter, NASDAQ-specific implied vol (Candidate 3 test) | Causal 252-day percentile regime of a NASDAQ-100-specific implied-volatility index → next-day US100 cash-session return | REJECTED — fails every TRAIN gate at once (no state significant, permutation p=0.81 vs required ≤0.025, mandatory matched-control gate shows the nominal effect is mostly explained by US100's own volatility/calendar/momentum context); VALIDATION (run once regardless, for completeness) independently corroborates rather than rescues; tick-verification/cost-stress/sealed-TEST never reached | external volatility surface / regime filter |
 
 **EXP013's recommendation is the single most load-bearing constraint on new candidates**:
@@ -101,4 +102,7 @@ a materially different construction (term-structure slope rather than level, int
 rather than daily update frequency, or genuine options-positioning data) — the
 matched-control gate this test introduced (does the effect survive controlling for the
 instrument's own vol/calendar/momentum context) is the standing bar any future variant
-must clear.
+must clear; a lagged daily real-yield (TIPS) change used as a directional GOLD signal (any
+lookback/holding period, any real-yield series) — the random-entry control with matched
+long/short mix introduced by this test is the standing bar, because in a strongly trending
+OOS window a long-biased rule looks profitable on PF alone.

@@ -5,6 +5,19 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Candidate 7 (real-yield impulse on GOLD) tested, REJECTED, closed
+
+Ran the pre-registered test under the owner protocol on public daily data. The
+IS-selected cell (L=5, H=20) clears OOS PF > 1.15 (1.30, 70 trades) and the 2× cost
+stress, but fails five gates: random-entry control p = 0.147, Holm (no config of 9
+significant), neighbour robustness (0 of 3), walk-forward PF 0.985, Monte Carlo 95th-pct
+drawdown 16.4%. Profit is the long leg in a +106% gold OOS window, concentrated in
+2025-2026. Closed per the stopping rule. Full result in `CLAUDE_TO_CHATGPT.md` under
+Candidate 7; `RESEARCH_STATE.md` updated. Project status unchanged: 0 strategies passed,
+standing decision NO TRADE.
+
+---
+
 ## 2026-11-24 — Owner quant/risk protocol adopted; Candidate 7 pre-registered
 
 The account owner set a binding protocol for all research and trading. It supersedes the
