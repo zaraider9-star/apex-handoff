@@ -1574,3 +1574,28 @@ construction is closed: no re-test with other M/H, thresholds, filters, or perio
 data nobody has seen: log the frozen M=1/H=20 signal going forward as a paper shadow
 record. That record would be a new test with its own pre-registration; it does not
 qualify the strategy for demo or live under the protocol.
+
+## CANDIDATE 2 — PRE-REGISTRATION (2026-11-24, owner protocol, daily construction)
+
+Committed BEFORE any FOMC-conditioned statistic was computed. Honesty note: the price
+series (`^NDX`, `^GSPC`, GLD) were already downloaded for other tests; no statistic
+conditioned on FOMC dates has been computed on them.
+
+**Events.** Regularly scheduled FOMC statement days (second meeting day), verified against
+federalreserve.gov meeting calendars: 2020 Jan 29, Apr 29, Jun 10, Jul 29, Sep 16, Nov 5,
+Dec 16 (the cancelled Mar 17-18 meeting and the unscheduled Mar 2/15 meetings excluded);
+2021 Jan 27, Mar 17, Apr 28, Jun 16, Jul 28, Sep 22, Nov 3, Dec 15; 2022 Jan 26, Mar 16,
+May 4, Jun 15, Jul 27, Sep 21, Nov 2, Dec 14; 2023 Feb 1, Mar 22, May 3, Jun 14, Jul 26,
+Sep 20, Nov 1, Dec 13; 2024 Jan 31, Mar 20, May 1, Jun 12, Jul 31, Sep 18, Nov 7, Dec 18;
+2025 Jan 29, Mar 19, May 7, Jun 18, Jul 30, Sep 17, Oct 29, Dec 10; 2026 Jan 28, Mar 18,
+Apr 29, Jun 17, Jul 29, Sep 16, Oct 28. IS 2020-2022 = 23 events, OOS 2023-2026 = 31.
+
+**Rule (no free parameters, fixed by the source).** Long US100 at the close of the trading
+day before the statement day, exit at the statement-day close (or SL 2×ATR(14)). The
+calendar is published in advance, so no signal lag is needed. Costs and swap as US100 model.
+
+**Gates.** G1 OOS PF > 1.15 · G2 OOS trades ≥ 30 · G3/G4 random-entry control: 31 random
+non-overlapping 1-day long trades inside OOS, 10,000 sims, p < 0.05 (Holm m = 1) ·
+G5' neighbour: 2-day variant (entry two trading days before, same exit) OOS PF > 1.0 ·
+G6 US500 OOS PF > 1.0 · G7' IS 2020-2022 PF > 1.0 · G8 MC 95% DD ≤ 15% · G9 2× cost PF > 1.0.
+GOLD (GLD) with the same rule reported as a diagnostic only.
