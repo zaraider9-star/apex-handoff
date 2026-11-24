@@ -1516,3 +1516,61 @@ risk premia are temporarily elevated, so subsequent US100 returns are higher.
 Signal dated t tradable at the next day's close. Grid M ∈ {1, 5, 10} × H ∈ {1, 5, 20}.
 Walk-forward years 2014-2019. G6 = US500. 2020-2026 results reported for information only
 (contaminated, not gating).
+
+## THIRD PASS — RESULTS (tested 2026-11-24)
+
+Data downloaded after commit 0eaa339: Yahoo `IEF`, `QQQ`, `SPY`, `^NDX`, `^GSPC`
+(2007-01-03 → 2026-11-17, adjusted close used only for IEF's total return); FRED `DFF`,
+`VIXCLS`, `VXVCLS` from 2007. Engine re-verified against Candidate 7 after generalisation.
+
+### Candidate 12 — REJECT (7 of 9 gates failed)
+
+OOS net PF in R (random p) for τ = 0 / 1% / 2%: H1 2.35 (0.008) / 2.62 (0.006) / 1.94
+(0.055) · H3 1.30 / 1.44 / 1.37 · H5 0.88 / 0.91 / 0.84. IS-selected τ=1%, k=H=5 (IS PF
+1.40): OOS PF 0.91, p = 0.42, neighbours 0.88 / 0.84 / 1.44, US500 0.89, walk-forward 0.60,
+2× cost 0.84; only G2 (34 trades) and G8 (DD 7.9%) pass. The H=1 cells look strong OOS
+but were the worst in-sample (IS PF 0.76 and 0.47) — a sign flip between periods, and
+neither clears Holm (p 0.006 vs required ≤ 0.0056). Selecting them after seeing OOS would be
+data snooping. Closed.
+
+### Candidate 13 — REJECT (4 of 9 gates failed)
+
+972 OOS nights. Overnight PF 1.11 vs intraday 1.04, random-segment median 1.07; control
+p = 0.27. Years 0.98 / 1.33 / 1.20 / 0.95 (2 of 4 > 1); IS 2020-2022 PF 0.98. Passes US500
+(1.02), MC DD (10.5%), 2× cost (1.03). HAC t = 1.30. The overnight premium is not
+distinguishable from random segment choice at CFD cost. Closed.
+
+### Candidate 14 — REJECT (2 of 9 gates failed) — closest result in the project so far
+
+Sample 2008-2019 as pre-registered. Backwardation share of days: 15.8% IS, 8.0% OOS.
+OOS (2014-2019) net PF in R (random p): M1 1.24 (0.18) / 1.62 (0.18) / 2.17 (0.060) ·
+M5 1.21 / 1.23 / 1.74 · M10 1.62 / 2.67 / 2.73 for H = 1 / 5 / 20. No config Holm-significant.
+
+IS-selected M=1, H=20 (IS PF 1.34, 41 trades):
+
+| Gate | Value | |
+|---|---|---|
+| G1 OOS PF > 1.15 | 2.17 | pass |
+| G2 OOS trades ≥ 30 | 33 | pass |
+| G3 random-entry p < 0.05 | 0.060 | **FAIL** |
+| G4 Holm-significant | no | **FAIL** |
+| G5 neighbours | 1.74 / 1.62 | pass |
+| G6 US500 OOS PF | 2.40 (32 trades) | pass |
+| G7 walk-forward PF | 2.33 | pass |
+| G8 MC 95% DD | 9.5% | pass |
+| G9 2× cost PF | 2.02 | pass |
+
+HAC t = 3.11; every OOS year profitable (PF 3.84 / 1.73 / 1.49 / one trade / 1.44 / 1.82);
+win rate 54.5%, avg win 2.03R, avg loss −1.12R. Contaminated 2020-2026 period (information
+only): 28 trades, PF 1.24.
+
+**Reason for REJECT.** Random long entries in the same 2014-2019 window have a median PF
+of 1.27 (US100 +145% over the period); 6% of random sims reach PF ≥ 2.17, above the 5%
+limit, and no config survives Holm. With only 33 trades the test lacks the power to
+separate the timing effect from the bull-market drift. Per the stopping rule the
+construction is closed: no re-test with other M/H, thresholds, filters, or periods.
+
+**Owner-decision option (not a trade, no capital).** The only clean way to learn more is
+data nobody has seen: log the frozen M=1/H=20 signal going forward as a paper shadow
+record. That record would be a new test with its own pre-registration; it does not
+qualify the strategy for demo or live under the protocol.

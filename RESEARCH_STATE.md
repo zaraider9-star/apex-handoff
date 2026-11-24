@@ -44,6 +44,11 @@ reverse to SL.
 | LBMA PM auction (Candidate 1 test) | Modern (2015+ electronic) 15:00 London gold-fix first-minute direction → 3min continuation | REJECTED — fails its own pre-registered permutation-test threshold on TRAIN; VALIDATION corroborates rather than rescues (below-coin-flip continuation rate, single-month-concentrated effect); tick-verification/cost-stress/sealed-TEST never reached | scheduled-auction / fixing-time |
 | GOLD/SILVER relative-value mean reversion (Candidate 5 test) | Causal rolling-window hedge-ratio spread, extreme Z-score → mean reversion | REJECTED — fixed-beta cointegration unconfirmed and hedge ratio strongly unstable; TRAIN discovery looked clean on its own gates but failed a randomized-pairing null (fake pairing reproduces most of the effect, p≈0.07-0.11 vs required ≤0.025) — effect substantially a rolling-regression construction artifact, not GOLD/SILVER-specific; VALIDATION/tick-verification/cost-stress/sealed-TEST never reached | cross-instrument cointegration / stat-arb |
 | Real-yield impulse on GOLD (Candidate 7 test, owner protocol) | Lagged change in 10Y TIPS real yield (FRED DFII10) → opposite-direction GOLD position, 1-20 day hold, 2×ATR SL, IS 2020-2022 / OOS 2023-2026 | REJECTED — IS-selected cell reaches OOS PF 1.30 but fails random-entry control (p=0.147), Holm (0 of 9 configs significant), neighbour robustness (0/3 neighbours PF>1), walk-forward (PF 0.985) and MC drawdown (16.4%); 6 of 9 configs lose OOS; profit is long-side drift in 2025-2026 only | rates / opportunity-cost macro signal |
+| GVZ volatility risk premium on GOLD (Candidate 8, owner protocol) | Z-scored GVZ minus realized vol → GOLD direction, US100/VXN cross-check | REJECTED — IS-selected OOS PF 1.08, random-entry p=0.36, 0/9 Holm, neighbours fail, MC DD 22% | implied-minus-realized vol spread |
+| VIX/VIX3M contango long/flat on US100 (Candidate 9, owner protocol) | Long only when VIX < VIX3M | REJECTED — random long entries beat contango timing in all 9 configs (p=1.00); IS PF < 1 everywhere | VIX term-structure slope filter |
+| Month-end balanced-fund rebalancing flow (Candidate 12, owner protocol) | S&P-minus-IEF month-to-date spread → opposite US100 position into month-end | REJECTED — IS-selected OOS PF 0.91, 7/9 gates fail; strong OOS H=1 cells were worst in-sample (sign flip) | calendar-timed flow conditioned on bond returns |
+| Overnight drift (Candidate 13, owner protocol) | Long US100 close → next open | REJECTED — PF 1.11 vs random-segment median 1.07 (p=0.27), IS PF 0.98 | overnight holding premium |
+| Backwardation buy-the-fear on US100, 2008-2019 (Candidate 14, owner protocol) | Long when VIX > VIX3M, 20-day hold | REJECTED (near miss) — OOS PF 2.17, 33 trades, 7/9 gates pass, but random-entry p=0.060 and no Holm survivor | VIX term-structure backwardation |
 | External volatility regime filter, NASDAQ-specific implied vol (Candidate 3 test) | Causal 252-day percentile regime of a NASDAQ-100-specific implied-volatility index → next-day US100 cash-session return | REJECTED — fails every TRAIN gate at once (no state significant, permutation p=0.81 vs required ≤0.025, mandatory matched-control gate shows the nominal effect is mostly explained by US100's own volatility/calendar/momentum context); VALIDATION (run once regardless, for completeness) independently corroborates rather than rescues; tick-verification/cost-stress/sealed-TEST never reached | external volatility surface / regime filter |
 
 **EXP013's recommendation is the single most load-bearing constraint on new candidates**:
@@ -105,4 +110,8 @@ instrument's own vol/calendar/momentum context) is the standing bar any future v
 must clear; a lagged daily real-yield (TIPS) change used as a directional GOLD signal (any
 lookback/holding period, any real-yield series) — the random-entry control with matched
 long/short mix introduced by this test is the standing bar, because in a strongly trending
-OOS window a long-biased rule looks profitable on PF alone.
+OOS window a long-biased rule looks profitable on PF alone; a GVZ-minus-realized-vol
+spread as a GOLD direction signal; a VIX/VIX3M term-structure state (contango long/flat or
+backwardation buy-the-fear, any smoothing/holding period) on US100/US500; month-end
+stock-vs-bond rebalancing pressure on US indices; the unconditional overnight hold on
+US indices.

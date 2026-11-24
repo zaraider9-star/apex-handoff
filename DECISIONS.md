@@ -5,6 +5,19 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Candidates 8, 9, 12, 13, 14 tested under owner protocol, all REJECTED
+
+Pre-registered in commits 8510ff4 (8, 9) and 0eaa339 (12-14), each before its data was
+downloaded. Results: 8 (GVZ VRP on GOLD) 5 gates failed; 9 (VIX contango filter on US100)
+4 failed — random long entries beat the filter in every config; 12 (month-end
+rebalancing) 7 failed; 13 (overnight drift) 4 failed; 14 (backwardation buy-the-fear,
+separate 2008-2019 sample because the idea came from Candidate 9's OOS data) 2 failed —
+OOS PF 2.17 on 33 trades but random-entry p = 0.060 and no Holm survivor. All closed per
+the stopping rule. Full detail in `CLAUDE_TO_CHATGPT.md`; `RESEARCH_STATE.md` updated.
+Project status: 0 PASS, standing decision NO TRADE.
+
+---
+
 ## 2026-11-24 — Candidate 7 (real-yield impulse on GOLD) tested, REJECTED, closed
 
 Ran the pre-registered test under the owner protocol on public daily data. The
