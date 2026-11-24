@@ -846,6 +846,72 @@ Candidate 3).
 Automation 5, Data accessibility 5, Opportunity frequency 3, Cost headroom 4, Falsifiability
 5, Novelty vs Apex 5 — **43/50**.
 
+### PRE-REGISTRATION (2026-11-24, owner protocol) — written and committed BEFORE any data was downloaded
+
+Governing protocol: the owner's quant protocol adopted 2026-11-24 (see `DECISIONS.md`).
+Everything below is frozen; nothing may be changed after data is seen. Any gate failure =
+REJECT and this construction is closed (no retest with other lookbacks, thresholds,
+filters, or substitute real-yield series).
+
+**Hypothesis.** A fall in the US 10-Year real yield predicts a positive GOLD return over
+the following days (and a rise, a negative one), through lagged opportunity-cost
+rebalancing by allocators. Direction is fixed by the mechanism, never fitted.
+
+**Data (public, daily).** FRED `DFII10` (10Y TIPS constant-maturity real yield); FRED `DFF`
+(effective fed funds, swap model only); XAUUSD daily OHLC; XAGUSD daily OHLC
+(cross-symbol check only). Source hosts and download date recorded in the result.
+
+**Signal.** `dRY_L(t) = DFII10(t) − DFII10(t−L)` over DFII10 observations. Position
+direction `d = −sign(dRY_L)`; `dRY_L = 0` → no trade.
+
+**Timing (anti-look-ahead).** A DFII10 value dated *t* is treated as known only at GOLD's
+daily close of the first gold trading day strictly after *t*. Entry = that close. This
+deliberately gives up one day of signal freshness so that the release-time question
+(Treasury end-of-day curve vs. FRED next-morning post) cannot leak. A "same-day close"
+variant is reported as a diagnostic only and is NOT eligible for PASS.
+
+**Trade mechanics.** One position at a time (non-overlapping). Exit at the close after H
+gold trading days, or at SL. SL = 2.0 × ATR(14, Wilder, through entry day) from entry. From
+the first day after entry: if the open gaps beyond SL → exit at the open; else if the
+day's range touches SL → exit at SL (worst case, no intrabar optimism). No TP; the time
+exit is the profit exit. Result per trade recorded in R = PnL / (entry − SL distance).
+
+**Costs (per trade, real-cost model, stated assumptions).** GOLD: $0.50/oz round trip
+(spread + commission + slippage). SILVER: $0.03/oz round trip. Swap per calendar night
+held, on notional: long pays (DFF + 2.0%)/360, short receives (DFF − 2.0%)/360 (negative
+when DFF < 2%, i.e. short also pays). Cost stress: all costs ×2.
+
+**In-sample optimisation (2020-01-01 → 2022-12-31).** Grid L ∈ {1, 5, 20} × H ∈ {1, 5, 20}
+= 9 configs. Selected config = highest IS net PF among configs with ≥30 IS trades.
+
+**Out-of-sample (2023-01-01 → latest available).** All 9 configs evaluated once.
+
+**PASS — every gate required, on the IS-selected config:**
+- G1 OOS net PF > 1.15
+- G2 OOS trades ≥ 30
+- G3 Random-entry control: 10,000 simulations with the same number of long and short
+  trades, same H and SL rule, random non-overlapping entry days inside OOS;
+  p = (1 + #{PF_sim ≥ PF_real}) / 10,001; require p < 0.05
+- G4 Holm step-down over the G3 p-values of all 9 configs, family α = 0.05; the selected
+  config must remain significant
+- G5 Neighbour robustness: immediate grid neighbours (adjacent L or H) — ≥ 2/3 of them with
+  OOS net PF > 1.0
+- G6 Cross-symbol: identical frozen config on XAGUSD, OOS net PF > 1.0
+- G7 Anchored walk-forward: for each OOS year (2023, 2024, 2025, 2026 YTD) re-select the
+  config on all data from 2020-01-01 to the prior year end, trade that year;
+  concatenated walk-forward net PF > 1.10
+- G8 Monte Carlo drawdown: 10,000 bootstrap resamples of the OOS R-sequence at 1%
+  fixed-fractional risk; 95th-percentile max drawdown ≤ 15%
+- G9 Cost stress: OOS net PF at 2× costs > 1.0
+
+**Diagnostics (reported, not gating).** HAC (Newey-West) t-stat on per-trade net returns;
+long-only / short-only split; PF by calendar year; same-day-close timing variant.
+
+**Ex-ante expectation (recorded before data, not a result).** Low probability of PASS. The
+gold–real-yield link is mainly contemporaneous (priced the same day), and it is widely
+reported to have weakened from 2022 as central-bank buying decoupled gold from real rates —
+the OOS window sits entirely inside that period. A lagged daily rule may have nothing left.
+
 ---
 
 ## CANDIDATE 8

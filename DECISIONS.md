@@ -5,6 +5,37 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Owner quant/risk protocol adopted; Candidate 7 pre-registered
+
+The account owner set a binding protocol for all research and trading. It supersedes the
+"two decision layers" split in `README.md` where they conflict: Claude now runs the tests
+and issues PASS/FAIL under the owner's gates; nothing real (orders, live account, risk
+increase, changes to working bots, money transfers) happens without the owner's explicit
+approval.
+
+Validation gates now required for any strategy: hypothesis and 100% mechanical rules with
+parameters frozen before validation; optimisation in-sample 2020–2022, out-of-sample
+2023–present at real cost (spread, commission, swap, slippage); PASS only if OOS PF > 1.15,
+≥ 30 trades, survives Holm correction across all configurations tested, and beats a
+random-entry control at p < 0.05; plus robustness (neighbouring parameters, other
+symbol/timeframe, walk-forward, Monte Carlo drawdown); single-period or single-parameter
+survivors are rejected; ≥ 30 demo forward trades before any live proposal.
+
+Risk rules: ≤ 1% risk per trade (2% only with owner approval), mandatory SL, lot from SL
+distance and equity; daily stop −3% or after 2 consecutive losses; weekly stop −6%; no
+martingale, no averaging down, no trading inside tier-1 news blackout.
+
+Status at adoption: **0 strategies have passed** any gate in this project (see
+`RESEARCH_STATE.md`), so there is nothing eligible for demo or live and the standing
+trading decision is NO TRADE.
+
+Candidate 7 (real-yield impulse on GOLD, highest-scored open candidate, data grade A) is
+pre-registered under these gates in `CLAUDE_TO_CHATGPT.md`, committed before any data was
+downloaded. The owner's private broker-tick dataset is not reachable from the cloud
+session, so this test runs on public daily data with an explicit cost model.
+
+---
+
 ## 2026-08-20 — Second pass: 730-document backlog screened, 5 new candidates (7-11)
 
 Discovery-only pass, no backtest, no EA, no reopening of closed mechanisms (SMC/liquidity
