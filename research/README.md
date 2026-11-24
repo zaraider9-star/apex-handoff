@@ -36,3 +36,20 @@ Steps for that session:
    modelled ones.
 4. Append results to `CLAUDE_TO_CHATGPT.md` / `DECISIONS.md`; never commit raw tick data,
    account numbers, broker names tied to an account or credentials.
+
+## Candidate 15 (intraday, pre-registered in commit 55874e1) — data blocked in the cloud
+
+The cloud session's shared egress was rate-limited and then cut off by Dukascopy
+(HTTP 429, then dropped connections) after the first probe, so the intraday data could not
+be downloaded there. From the owner's computer (own IP), in this repo:
+
+    research/fetch_data.sh data
+    python3 -I research/duka.py duka USATECHIDXUSD 2019-12-02 2026-11-23
+    python3 -I research/duka.py duka USA500IDXUSD 2019-12-02 2026-11-23
+    python3 -I research/run_c15.py research data duka 1000 1000
+
+`duka.py` downloads sequentially (1.5 s pause, back-off on 429) and caches, so it can be
+stopped and resumed. The script prints a calibration line (Dukascopy 15:59 mid vs Yahoo
+close) — check it is within a fraction of a percent before reading any gate; if the
+US500 price scale is off by a power of ten, pass the right divisor as the last argument.
+Do not change τ, T, SL, costs or gates: they are frozen by the pre-registration.
