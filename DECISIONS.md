@@ -5,6 +5,19 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Shadow (paper) ledger for Candidate 14 started; research code published
+
+Owner approved two follow-ups. (3) Shadow trading with a daily report: Candidate 14's frozen
+rule (M=1, H=20) now runs as a paper ledger from 2026-11-24 with the owner's risk rules,
+rebuilt and committed every US trading day by a scheduled task (`shadow/`). Pre-registered
+evaluation at 30 closed trades; expected pace ~5 trades/year. Paper only; Candidate 14
+stays REJECTED. (1) Broker-data run: the owner's `QuantResearch` folder is not offered to
+cloud sessions, so `research/README.md` now holds the engine, a data fetcher and step-by-step
+instructions for a local session. Repo policy in `README.md` amended to allow `research/` and
+`shadow/` (public-data code and paper ledger only).
+
+---
+
 ## 2026-11-24 — Correction: OOS data window was cut one week short; all verdicts re-confirmed
 
 Error found and fixed: the Yahoo download end parameter used for Candidates 7, 8, 9, 12, 13

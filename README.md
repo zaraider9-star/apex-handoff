@@ -38,10 +38,13 @@ mechanisms Apex has already tested and rejected — nothing else.
 | `CONCEPT_INDEX.md` | Full raw extraction before the final ranking — every concept considered, including rejected duplicates and rejected trash/unverifiable sources, so nothing gets rediscovered from scratch. |
 | `RESEARCH_STATE.md` | Sanitized summary of which mechanism families Apex has already tested and their results (REJECTED / PASS / inconclusive), used as the duplicate-elimination reference. |
 | `DECISIONS.md` | Append-only log of handoff-level decisions (what was published, when, why). Not a trading journal. |
+| `research/` | Owner-protocol test engine and per-candidate scripts — public data (FRED, Yahoo) only, plus instructions for running the same protocol on the owner's local broker data. |
+| `shadow/` | Paper-only (shadow) ledger of a frozen, REJECTED rule, rebuilt and reported daily. Never places orders. |
 
 ## Sanitization policy
 
-Nothing enters this repo that isn't already one of the five files above. Before any
+Nothing enters this repo that isn't one of the five files above or inside `research/` /
+`shadow/` (added 2026-11-24 by owner request; public-data code and a paper ledger only). Before any
 commit: no MT5 account numbers, no API keys/credentials, no broker names tied to a real
 account, no raw proprietary datasets, no private Apex source code, no reproduced
 copyrighted book/PDF text. Source citations are metadata only (title, author, chapter) —

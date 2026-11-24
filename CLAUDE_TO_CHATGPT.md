@@ -1609,3 +1609,32 @@ mean net +6.4 bp per event. By year 1.39 / 1.05 / 3.28 / 0.40. GOLD diagnostic P
 (31 events, not gating). The strong IS result does not carry into OOS and the drift is no
 better than a random US100 day — consistent with published evidence that the pre-FOMC
 drift faded after the mid-2010s. Closed per the stopping rule.
+
+### CANDIDATE 14 — SHADOW (paper) PRE-REGISTRATION (2026-11-24, owner-approved)
+
+Paper only — no orders, no demo, no capital. Purpose: collect data nobody has seen. Does not
+change Candidate 14's REJECT verdict.
+
+**Rule (frozen, IS-selected config M=1, H=20).** Long US100 at a session's close when the
+latest FRED VIX/VIX3M daily close ratio dated strictly before that session is > 1.0. SL =
+entry − 2×ATR(14, Wilder, `^NDX` daily). Exit at SL (gap beyond SL → open) or at the close
+20 sessions after entry. One position at a time; re-entry allowed at the exit-session close.
+Costs: 2.0 index points round trip, swap long (DFF + 2.5%)/360 per calendar night.
+**Owner risk rules applied** (unlike the backtest engine): after 2 consecutive losses no
+new entry that session; realized −3% in a session or −6% in an ISO week blocks new
+entries; 1% risk per trade; entries at the 16:00 New York close sit outside tier-1 release
+windows.
+
+**Implementation check.** `shadow/run_shadow.py` replayed on 2014-2019 reproduces 31 of the
+33 backtest trades to 1e-6 R; the other 2 are delayed one session by the 2-loss rule
+(replay PF 2.20 vs backtest 2.17).
+
+**Start.** Flat; first eligible session 2026-11-24. The ledger is rebuilt from the start on
+every run (stateless) and committed with a daily report (`shadow/STATUS.md`,
+`shadow/reports/`, `shadow/ledger.csv`).
+
+**Evaluation (pre-registered).** At 30 closed shadow trades: PF > 1.15 AND a random-entry
+control on the shadow period (same method, matched trade count) at p < 0.05 → eligible to
+be proposed to the owner for a demo forward test. Otherwise closed for good. Interim reports
+carry no decision weight. Expected pace from history: ~5 trades/year (33 in 2014-2019, 28
+in 2020-2026), so 30 trades ≈ 5-7 years.
