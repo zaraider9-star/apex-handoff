@@ -5,6 +5,21 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Correction: OOS data window was cut one week short; all verdicts re-confirmed
+
+Error found and fixed: the Yahoo download end parameter used for Candidates 7, 8, 9, 12, 13
+and 2 fell on 2026-11-17, so the pre-registered "latest available" OOS end was missed by
+four sessions (2026-11-18 → 11-23). Every affected test was re-run on data through
+2026-11-23 (the last complete session; the in-progress 11-24 bar is excluded). All verdicts
+unchanged: C7 REJECT (5 gates failed, IS-selected OOS PF 1.30), C8 REJECT (5 failed, OOS PF
+1.11, p 0.30), C9 REJECT (4 failed, p 1.00), C12 REJECT (7 failed), C13 REJECT (3 failed,
+overnight PF 1.13 vs random-segment median 1.06, p 0.18, IS PF 0.98), C2 REJECT (3 failed,
+OOS PF 1.08, p 0.55). C14 (2008-2019 sample) is unaffected. The per-candidate result blocks
+in `CLAUDE_TO_CHATGPT.md` keep the original 2026-11-17 numbers as first reported; this entry
+supersedes them where they differ.
+
+---
+
 ## 2026-11-24 — Candidate 2 (pre-FOMC drift, daily) tested, REJECTED; public-data queue exhausted
 
 Pre-registered in fad081e (FOMC dates verified on federalreserve.gov). IS PF 2.13 on 23
