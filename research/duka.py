@@ -12,7 +12,7 @@ def path(root, sym, side, day):
     return f"{root}/{sym}/{side}/{day:%Y-%m-%d}.bi5"
 
 
-def fetch_one(args, pause=0.4):
+def fetch_one(args, pause=1.5):
     """Sequential-friendly: honours Dukascopy's rate limit (HTTP 429) with growing back-off."""
     root, sym, side, day = args
     p = path(root, sym, side, day)
@@ -21,7 +21,7 @@ def fetch_one(args, pause=0.4):
     os.makedirs(os.path.dirname(p), exist_ok=True)
     url = URL.format(sym=sym, y=day.year, m=day.month - 1, d=day.day, side=side)  # month is 0-based
     wait = 20
-    for k in range(12):
+    for k in range(10):
         r = subprocess.run(["curl", "-s", "-m", "60", "-o", p + ".part", "-w", "%{http_code}", url], capture_output=True, text=True)
         code = r.stdout
         if r.returncode == 0 and code in ("200", "404"):
@@ -29,7 +29,7 @@ def fetch_one(args, pause=0.4):
                 open(p + ".part", "wb").close()
             os.replace(p + ".part", p); time.sleep(pause)
             return p, code
-        time.sleep(wait if code == "429" else 5); wait = min(wait * 2, 300)
+        time.sleep(wait); wait = min(wait * 2, 600)  # 429 or dropped connection: back off
     if os.path.exists(p + ".part"):
         os.remove(p + ".part")
     return p, f"fail rc={r.returncode} http={code}"
