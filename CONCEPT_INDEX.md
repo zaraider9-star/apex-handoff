@@ -236,3 +236,25 @@ survivors. No full-document ingestion; no backtest run.
   full read for none (all resolved at abstract/conclusion depth). ~444 documents from the
   PRE-existing (pass-one) library remain covered only by the pass-one 66-source spot
   inspection, not re-read this pass.
+
+---
+
+# THIRD/FOURTH PASS — 2026-11-24 — owner protocol, tested concepts (not library extractions)
+
+Generated from general literature and from test observations, not from the library; each was
+pre-registered and tested (results in `CLAUDE_TO_CHATGPT.md`). Listed so none is rediscovered.
+
+37. **Month-end balanced-fund rebalancing flow** (stock-vs-bond month-to-date spread →
+    opposite index position into month-end) → Candidate 12. REJECTED (7 gates).
+38. **Overnight drift** (index long close → next open) → Candidate 13. REJECTED.
+39. **Backwardation buy-the-fear** (long US100 when VIX > VIX3M, 20-session hold) → Candidate
+    14, idea taken from Candidate 9's OOS observation, tested on an untouched 2008-2019 sample.
+    REJECTED as a near miss (random-entry p = 0.060); frozen rule running as a paper shadow
+    ledger from 2026-11-24 (`shadow/`).
+40. **End-of-day hedging-demand momentum** (previous close → late-afternoon return predicts
+    the last 30 minutes; dealer gamma / leveraged-ETF rebalancing) → Candidate 15,
+    pre-registered, intraday Dukascopy bid/ask data.
+
+Observations logged but NOT eligible as hypotheses on the data that produced them: Candidate 12's
+H=1 month-end cells (strong OOS, worst IS — sign flip); Candidate 8's N21/H1 cell (p 0.017, not
+IS-selected); Candidate 2's GOLD diagnostic on FOMC days (PF 1.36, 31 events).
