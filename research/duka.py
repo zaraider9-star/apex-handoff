@@ -38,6 +38,8 @@ def fetch(root, sym, days, workers=6):
 
 
 def decode(p, day):
+    if not os.path.exists(p):
+        return None
     raw = open(p, "rb").read()
     if not raw:
         return None
