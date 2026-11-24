@@ -1638,3 +1638,48 @@ control on the shadow period (same method, matched trade count) at p < 0.05 → 
 be proposed to the owner for a demo forward test. Otherwise closed for good. Interim reports
 carry no decision weight. Expected pace from history: ~5 trades/year (33 in 2014-2019, 28
 in 2020-2026), so 30 trades ≈ 5-7 years.
+
+---
+
+# FOURTH PASS — 2026-11-24 — intraday, real bid/ask
+
+## CANDIDATE 15 — End-of-day hedging-demand momentum (US100 / US500) — PRE-REGISTRATION
+
+Committed BEFORE any intraday data was downloaded (the Dukascopy feed was not yet reachable
+when this was written).
+
+**Mechanism.** Option dealers who are short gamma, and leveraged/inverse ETFs that must
+rebalance to their daily multiple, trade in the direction of the day's move near the cash
+close; the resulting flow makes the return from the previous close to late afternoon
+predict the last-30-minute return (Baltussen, Da, Lammers & Martens, "Hedging demand and
+market intraday momentum", Journal of Financial Economics 2021; related: Gao, Han, Li &
+Zhou, "Market intraday momentum", JFE 2018). Source quality A (peer-reviewed), carried from
+general literature, not located in the project library. Prior overlap: PARTIAL with EXP004
+(opening-drive momentum) — different trigger (whole-day move into a forced end-of-day flow),
+different window (close, not open).
+
+**Data.** Dukascopy minute BID and ASK candles: `USATECHIDXUSD` (US100), `USA500IDXUSD`
+(US500), UTC timestamps converted to New York time; trading calendar = sessions present in
+Yahoo `^NDX` daily data; daily ATR(14, Wilder) from Yahoo `^NDX` / `^GSPC` through the prior
+session. Early-close sessions excluded by a fixed pattern (Friday after Thanksgiving;
+Dec 24 and Jul 3 when Monday-Thursday), consistent with NYSE calendars confirmed for
+2023-2026.
+
+**Signal.** P_prev = mid close of the 15:59 New York minute of the previous session.
+At entry time T, r = mid close of minute T−1 / P_prev − 1. If |r| > τ: d = sign(r).
+**Fills (real spread).** Long enters at the ASK close of minute T−1, short at the BID close;
+long exits at the BID close of the 15:59 minute, short at the ASK close; plus slippage 0.5
+point (US100) / 0.15 point (US500) per side. No swap (intraday).
+**SL.** 0.5 × daily ATR(14) from the entry price, checked minute by minute on the side the
+position would close at (gap beyond SL at a minute's open → exit at that open). R = net PnL /
+SL distance.
+
+**Grid (IS 2020-2022).** τ ∈ {0, 0.25%, 0.5%} × T ∈ {15:00, 15:30} = 6 configs; selection =
+highest IS net PF in R with ≥ 30 IS trades. OOS 2023-01-01 → latest complete session.
+
+**Gates (all required, IS-selected config).** G1 OOS PF > 1.15 · G2 ≥ 30 OOS trades · G3
+random-entry control: 10,000 sims, same number of long and short trades, same T and exit,
+placed on random OOS sessions, p < 0.05 · G4 Holm over the 6 configs' G3 p-values · G5 ≥ 2/3
+of grid neighbours with OOS PF > 1.0 · G6 US500 same frozen config OOS PF > 1.0 · G7
+anchored yearly walk-forward PF > 1.10 · G8 MC 95th-pct DD ≤ 15% at 1% risk · G9 cost
+stress (spread paid ×2, slippage ×2) PF > 1.0. Any failure = REJECT, construction closed.
