@@ -5,6 +5,17 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Daily shadow report moved into the research session
+
+The first scheduled run (22:38 UTC) computed the paper entry correctly (long US100 at the
+2026-11-24 close 26214.17, SL 24519.39, VIX/VIX3M 2026-11-23 = 1.0439) and notified the owner,
+but its fresh session had no push access to this repo (HTTP 403), so the commit was lost.
+The report was regenerated and pushed from the research session (commit 8fdfc1d). The
+fresh-session task is disabled (kept for history); a replacement with the same schedule fires
+into the research session, which has push access. No rule or parameter changed.
+
+---
+
 ## 2026-11-24 — Shadow (paper) ledger for Candidate 14 started; research code published
 
 Owner approved two follow-ups. (3) Shadow trading with a daily report: Candidate 14's frozen
