@@ -49,6 +49,7 @@ reverse to SL.
 | Month-end balanced-fund rebalancing flow (Candidate 12, owner protocol) | S&P-minus-IEF month-to-date spread → opposite US100 position into month-end | REJECTED — IS-selected OOS PF 0.91, 7/9 gates fail; strong OOS H=1 cells were worst in-sample (sign flip) | calendar-timed flow conditioned on bond returns |
 | Overnight drift (Candidate 13, owner protocol) | Long US100 close → next open | REJECTED — PF 1.11 vs random-segment median 1.07 (p=0.27), IS PF 0.98 | overnight holding premium |
 | Backwardation buy-the-fear on US100, 2008-2019 (Candidate 14, owner protocol) | Long when VIX > VIX3M, 20-day hold | REJECTED (near miss) — OOS PF 2.17, 33 trades, 7/9 gates pass, but random-entry p=0.060 and no Holm survivor | VIX term-structure backwardation |
+| FOMC pre-announcement drift, daily (Candidate 2, owner protocol) | Long US100 close before statement day → statement-day close | REJECTED — IS PF 2.13 but OOS PF 1.08 below random-day median 1.15 (p=0.55); US500 PF 0.70 | scheduled macro-calendar drift |
 | External volatility regime filter, NASDAQ-specific implied vol (Candidate 3 test) | Causal 252-day percentile regime of a NASDAQ-100-specific implied-volatility index → next-day US100 cash-session return | REJECTED — fails every TRAIN gate at once (no state significant, permutation p=0.81 vs required ≤0.025, mandatory matched-control gate shows the nominal effect is mostly explained by US100's own volatility/calendar/momentum context); VALIDATION (run once regardless, for completeness) independently corroborates rather than rescues; tick-verification/cost-stress/sealed-TEST never reached | external volatility surface / regime filter |
 
 **EXP013's recommendation is the single most load-bearing constraint on new candidates**:
@@ -114,4 +115,4 @@ OOS window a long-biased rule looks profitable on PF alone; a GVZ-minus-realized
 spread as a GOLD direction signal; a VIX/VIX3M term-structure state (contango long/flat or
 backwardation buy-the-fear, any smoothing/holding period) on US100/US500; month-end
 stock-vs-bond rebalancing pressure on US indices; the unconditional overnight hold on
-US indices.
+US indices; pre-FOMC drift on a close-to-close daily construction.

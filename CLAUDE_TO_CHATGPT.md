@@ -1599,3 +1599,13 @@ non-overlapping 1-day long trades inside OOS, 10,000 sims, p < 0.05 (Holm m = 1)
 G5' neighbour: 2-day variant (entry two trading days before, same exit) OOS PF > 1.0 ·
 G6 US500 OOS PF > 1.0 · G7' IS 2020-2022 PF > 1.0 · G8 MC 95% DD ≤ 15% · G9 2× cost PF > 1.0.
 GOLD (GLD) with the same rule reported as a diagnostic only.
+
+### CANDIDATE 2 — RESULT (tested 2026-11-24) — REJECT (3 of 8 gates failed)
+
+IS 2020-2022: 23 events, PF 2.13. OOS 2023-2026: 31 events, PF 1.08 (G1 **FAIL**), random
+1-day long entries median PF 1.15, p = 0.554 (G3/G4 **FAIL**), US500 PF 0.70 (G6 **FAIL**).
+Passes: 31 trades, 2-day variant 1.19, IS PF > 1, MC DD 4.5%, 2× cost 1.05. HAC t = 0.36,
+mean net +6.4 bp per event. By year 1.39 / 1.05 / 3.28 / 0.40. GOLD diagnostic PF 1.36
+(31 events, not gating). The strong IS result does not carry into OOS and the drift is no
+better than a random US100 day — consistent with published evidence that the pre-FOMC
+drift faded after the mid-2010s. Closed per the stopping rule.

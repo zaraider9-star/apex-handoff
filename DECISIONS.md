@@ -5,6 +5,22 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-24 — Candidate 2 (pre-FOMC drift, daily) tested, REJECTED; public-data queue exhausted
+
+Pre-registered in fad081e (FOMC dates verified on federalreserve.gov). IS PF 2.13 on 23
+events, OOS PF 1.08 on 31 events, no better than random US100 days (p = 0.55), US500
+PF 0.70. Closed.
+
+With this, every SOURCE-WORTHY candidate that can be tested on free daily data has been
+tested under the owner protocol (1, 2, 3, 5, 7, 8, 9, plus new 12-14): 0 PASS. Remaining
+list items need data this session cannot reach: Candidates 10-11 need options open-interest
+data (paid); intraday event studies need intraday history back to 2020; broker-tick
+verification needs the owner's local QuantResearch dataset. Candidate 4 is NOT-WORTHY;
+Candidate 6's base (overnight hold) failed as Candidate 13 and its VIX-level leg is closed.
+Standing decision: NO TRADE.
+
+---
+
 ## 2026-11-24 — Candidates 8, 9, 12, 13, 14 tested under owner protocol, all REJECTED
 
 Pre-registered in commits 8510ff4 (8, 9) and 0eaa339 (12-14), each before its data was
