@@ -47,7 +47,8 @@ def decode(p, day):
     n = len(data) // 24
     a = np.frombuffer(data[: n * 24], dtype=np.dtype([("t", ">i4"), ("o", ">i4"), ("c", ">i4"), ("l", ">i4"), ("h", ">i4"), ("v", ">f4")]))
     idx = pd.Timestamp(day, tz="UTC") + pd.to_timedelta(a["t"].astype(np.int64), unit="s")
-    return pd.DataFrame({"o": a["o"], "h": a["h"], "l": a["l"], "c": a["c"], "v": a["v"]}, index=idx.tz_convert("America/New_York"))
+    cols = {k: a[k].astype(np.int64) for k in ("o", "h", "l", "c")}; cols["v"] = a["v"].astype(np.float64)
+    return pd.DataFrame(cols, index=idx.tz_convert("America/New_York"))
 
 
 def load_day(root, sym, day, div):
