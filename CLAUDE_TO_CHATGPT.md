@@ -1062,6 +1062,28 @@ IS net PF in R with ≥ 30 IS trades.
 implied series; OOS net PF > 1.0. US100 cost model: 2.0 index points round trip; swap
 long pays (DFF + 2.5%)/360, short receives (DFF − 2.5%)/360 per calendar night.
 
+### RESULT (tested 2026-11-24) — REJECT
+
+Run exactly as pre-registered (commit 8510ff4 precedes the GVZ/VXN/NDX downloads). Data:
+FRED `GVZCLS`, `VXNCLS`, `DFF`; Yahoo GLD (2018-01-02 → 2026-11-17, 2018 start for
+indicator warm-up), `^NDX`. Engine shared with Candidate 7 and verified to reproduce
+Candidate 7's numbers exactly before this run.
+
+**OOS net PF in R (random-entry p), all 9 configs:** N10/H1 0.97 (0.41) · **N10/H5 1.08
+(0.36)** · N10/H20 0.79 (0.92) · N21/H1 1.13 (0.017) · N21/H5 1.27 (0.10) · N21/H20 1.07
+(0.55) · N63/H1 0.95 (0.27) · N63/H5 1.02 (0.29) · N63/H20 1.18 (0.23). Holm (m=9): none
+significant.
+
+**IS-selected N=10, H=5** (IS PF 1.33, 162 trades): G1 OOS PF 1.08 **FAIL** · G2 215
+trades pass · G3 p = 0.363 **FAIL** · G4 Holm **FAIL** · G5 neighbours 1.27 / 0.97 / 0.79
+**FAIL** · G6 US100 (VXN) PF 1.04 pass · G7 walk-forward PF 1.12 pass · G8 MC 95% DD 22.4%
+**FAIL** · G9 2× cost PF 1.02 pass. HAC t = −0.13. Long leg PF 1.43, short leg 0.69; by
+year 0.76 / 1.09 / 2.02 / 0.66 — one good year (2025).
+
+N21/H1 has the lowest nominal p (0.017), but it was not IS-selected (IS PF 0.92) and
+fails Holm (would need p ≤ 0.0056). Picking it after seeing OOS would be data snooping;
+not eligible. Construction closed per the stopping rule.
+
 ---
 
 ## CANDIDATE 9
@@ -1172,6 +1194,32 @@ long pays (DFF + 2.5%)/360 per calendar night. Cost stress: points ×2, markup �
 days inside OOS — tests whether the contango timing beats buying US100 at random.
 
 **G6 cross-symbol.** Identical frozen M, H on US500 (`^GSPC`); OOS net PF > 1.0.
+
+### RESULT (tested 2026-11-24) — REJECT
+
+Run exactly as pre-registered (commit 8510ff4 precedes the VIX/VIX3M/NDX downloads).
+Data: FRED `VIXCLS`, `VXVCLS`, `DFF`; Yahoo `^NDX`, `^GSPC` (2018-01-02 → 2026-11-17).
+Contango share of days 2020-2026: 92.8%.
+
+**OOS net PF in R (random-entry p), all 9 configs:** M1: 1.10 / 1.32 / 1.59 (p 1.00 /
+1.00 / 0.94) · M5: 1.10 / 1.36 / 1.53 (1.00 / 1.00 / 0.95) · M10: 1.09 / 1.34 / 1.58
+(1.00 / 1.00 / 0.90) for H = 1 / 5 / 20. Every config loses to random long entries.
+
+**IS-selected M=5, H=1** (IS PF 0.99 — no config was profitable in-sample): G1 OOS PF
+1.10 **FAIL** · G2 932 trades pass · G3 p = 1.000 **FAIL** · G4 Holm **FAIL** · G5
+neighbours pass · G6 US500 PF 1.05 pass · G7 walk-forward PF 1.39 pass · G8 MC 95% DD
+16.9% **FAIL** · G9 2× cost PF 1.05 pass. US100 buy-and-hold over OOS: +148.6%.
+
+**Reason for stopping.** The OOS PFs above 1 are US100's drift: random long entries with
+the same trade count do better than contango timing in all 9 configs (median random PF
+above the strategy's in every cell). The filter adds no value. Closed per the stopping
+rule.
+
+**Observation, not a result.** p = 1.000 means the ~7% of days the filter skips
+(backwardation) were followed by above-average US100 returns in 2023-2026 — consistent
+with "buy the fear" rebounds. The idea came from looking at OOS data, so it cannot be
+validated on 2023-2026. It is logged only; a valid test needs data not yet seen (forward
+demo, or a separately pre-registered test on a sample untouched for this hypothesis).
 
 ---
 
@@ -1390,3 +1438,81 @@ Automation 2, Data accessibility 2, Opportunity frequency 1, Cost headroom 3, Fa
   Wilder *New Concepts*, Pring *On Market Momentum*, Stridsman *Trading Systems That
   Work*) — indicator/pattern-catalog families, HIGH overlap with the already-closed
   indicator-catalog and candlestick audits. Bulk REJECTED, no new angle found.
+
+---
+
+# THIRD PASS — 2026-11-24 — owner protocol, public daily data
+
+Candidates 12-14 are new mechanisms not in `CONCEPT_INDEX.md` or the closed list. All three
+are pre-registered here and committed BEFORE their new data series (IEF, QQQ, SPY, and
+pre-2018 index/VIX history) were downloaded. Same engine, cost models, SL rule
+(2×ATR(14)), timing lag, random-entry control (10,000 sims), Holm family per candidate,
+Monte Carlo and stopping rule as Candidate 7, except where stated.
+
+Project-level multiplicity note: each candidate gets its own Holm family. Across the
+project many candidates are tested, so a single PASS is still provisional until the
+≥ 30-trade demo forward test, which is the final out-of-sample arbiter under the owner
+protocol.
+
+## CANDIDATE 12 — Month-end balanced-fund rebalancing flow (US100 / US500)
+
+**Mechanism.** Pension and balanced funds holding fixed stock/bond weights rebalance at
+month-end. When stocks have outperformed bonds month-to-date they must sell equities into
+the month-end close; when stocks have underperformed they must buy. Forced, calendar-timed
+flow conditioned on an external variable (bond returns), not pure seasonality.
+**Source.** General market-microstructure literature on pension rebalancing flows (e.g.
+recent academic work on predictable month-end equity returns from rebalancing). Honesty
+flag: not located in the project library; carried in from general domain knowledge, same
+caveat as Candidate 7.
+
+**Signal.** spread(t) = S&P 500 (`^GSPC`) month-to-date price return − IEF month-to-date
+total return (Yahoo adjusted close), both from the prior month's last close to close t.
+Entry at the close of the trading day k days before the month's last trading day, using
+spread measured through the close of the day before entry; d = −sign(spread) if
+|spread| > τ, else no trade. Exit H = k days later = the month's last-trading-day close (or
+SL). The final, incomplete month in the data is excluded.
+
+**Grid (IS 2020-2022).** τ ∈ {0%, 1%, 2%} × k ∈ {1, 3, 5} = 9 configs (H = k). Selection:
+highest IS net PF in R with ≥ 30 IS trades. OOS 2023-01-01 → latest. Gates G1-G9 as in
+Candidate 7. Traded instrument US100 (`^NDX`); G6 = US500 (`^GSPC`).
+
+## CANDIDATE 13 — Overnight drift (US100 / US500)
+
+**Mechanism.** A documented concentration of US equity-index returns in the overnight
+(close → next open) segment rather than the trading session (e.g. Cliff-Cooper-Gulen on
+day/night return differences; NY Fed staff work on the overnight drift in index futures),
+attributed to overnight inventory/hedging-demand imbalances. Base mechanism of Candidate 6,
+without the closed VIX-level conditioning. Not in the closed list (EXP010/EXP011 studied
+gap direction and overnight-range sweeps, not the overnight holding premium).
+
+**Rule.** Long at each trading day's close, exit at the next trading day's open. No
+parameters → no optimisation, Holm m = 1. Prices: QQQ (US100) and SPY (US500) open/close
+(actual traded prints; the `^NDX` index open is partly stale). Costs: US100 2.0 points /
+US500 0.6 points round trip on the index level, swap per calendar night as before
+(weekends = 3 nights). SL 2×ATR(14) fixes R; an open beyond SL exits at the open (same
+price).
+
+**Gates.** G1 OOS PF > 1.15 · G2 ≥ 30 trades · G3/G4 control: 10,000 sims, each day
+independently assigned at random (p = 0.5) to the overnight segment or the following
+intraday segment (open → close, same SL rule, spread cost, no swap); p = share of sims with
+PF ≥ real, require p < 0.05 · G5 (no parameter neighbours) replaced by: ≥ 3 of 4 OOS
+calendar years with PF > 1.0 · G6 US500 OOS PF > 1.0 · G7 (no parameters to walk forward)
+replaced by: IS 2020-2022 PF > 1.0 · G8 MC 95% DD ≤ 15% · G9 2× cost PF > 1.0.
+
+## CANDIDATE 14 — Backwardation "buy the fear" on US100 (separate sample)
+
+**Origin and deviation, stated up front.** This hypothesis came from the Candidate 9
+observation (2023-2026), so 2020-2026 is contaminated for it and cannot be used as
+validation. Protocol deviation (sample dates only): IS 2008-01-01 → 2013-12-31,
+OOS 2014-01-01 → 2019-12-31, a period not examined for this hypothesis (2018-2019 index
+prices were loaded only as indicator warm-up for Candidates 8-9; no conditioned statistic
+was computed on them). All gates otherwise identical. A PASS here is still provisional
+until the demo forward test.
+
+**Mechanism.** VIX above VIX3M (backwardation) marks forced de-risking and hedge demand;
+risk premia are temporarily elevated, so subsequent US100 returns are higher.
+
+**Rule.** d = +1 (long) if S_M(t) = mean of the last M VIX/VIX3M ratios > 1.0, else flat.
+Signal dated t tradable at the next day's close. Grid M ∈ {1, 5, 10} × H ∈ {1, 5, 20}.
+Walk-forward years 2014-2019. G6 = US500. 2020-2026 results reported for information only
+(contaminated, not gating).
