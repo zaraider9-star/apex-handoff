@@ -1,7 +1,7 @@
 """Dukascopy minute BID/ASK candles: download (cached) and decode.
 Format: LZMA-compressed records of >iiiiif = (seconds from 00:00 UTC, open, close, low, high, volume).
 Prices are integers; the divisor is calibrated against an external reference level (see scale())."""
-import lzma, os, struct, subprocess, sys
+import lzma, os, struct, subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np, pandas as pd
 
@@ -12,27 +12,36 @@ def path(root, sym, side, day):
     return f"{root}/{sym}/{side}/{day:%Y-%m-%d}.bi5"
 
 
-def fetch_one(args):
+def fetch_one(args, pause=0.4):
+    """Sequential-friendly: honours Dukascopy's rate limit (HTTP 429) with growing back-off."""
     root, sym, side, day = args
     p = path(root, sym, side, day)
     if os.path.exists(p):
         return p, "cached"
     os.makedirs(os.path.dirname(p), exist_ok=True)
     url = URL.format(sym=sym, y=day.year, m=day.month - 1, d=day.day, side=side)  # month is 0-based
-    for k in range(4):
+    wait = 20
+    for k in range(12):
         r = subprocess.run(["curl", "-s", "-m", "60", "-o", p + ".part", "-w", "%{http_code}", url], capture_output=True, text=True)
-        if r.returncode == 0 and r.stdout in ("200", "404"):
-            if r.stdout == "404":
+        code = r.stdout
+        if r.returncode == 0 and code in ("200", "404"):
+            if code == "404":
                 open(p + ".part", "wb").close()
-            os.replace(p + ".part", p)
-            return p, r.stdout
-    return p, f"fail rc={r.returncode} http={r.stdout}"
+            os.replace(p + ".part", p); time.sleep(pause)
+            return p, code
+        time.sleep(wait if code == "429" else 5); wait = min(wait * 2, 300)
+    if os.path.exists(p + ".part"):
+        os.remove(p + ".part")
+    return p, f"fail rc={r.returncode} http={code}"
 
 
-def fetch(root, sym, days, workers=6):
+def fetch(root, sym, days, workers=1, log=None):
     jobs = [(root, sym, side, d) for d in days for side in ("BID", "ASK")]
-    with ThreadPoolExecutor(workers) as ex:
-        res = list(ex.map(fetch_one, jobs))
+    res = []
+    for n, j in enumerate(jobs, 1):
+        res.append(fetch_one(j))
+        if log and n % 100 == 0:
+            print(f"{sym} {n}/{len(jobs)} last={res[-1][1]}", file=log, flush=True)
     bad = [r for r in res if r[1].startswith("fail")]
     return len(res), bad
 
@@ -64,5 +73,5 @@ def load_day(root, sym, day, div):
 if __name__ == "__main__":  # python3 -I duka.py <root> <SYM> <start> <end>  (fetch all calendar weekdays)
     root, sym, a, b = sys.argv[1:5]
     days = [d for d in pd.date_range(a, b) if d.weekday() < 5]
-    n, bad = fetch(root, sym, days)
+    n, bad = fetch(root, sym, days, log=sys.stdout)
     print(f"{sym}: {n} files, {len(bad)} failed", bad[:5])
