@@ -260,4 +260,5 @@ H=1 month-end cells (strong OOS, worst IS — sign flip); Candidate 8's N21/H1 c
 IS-selected); Candidate 2's GOLD diagnostic on FOMC days (PF 1.36, 31 events).
 41. **Implied-correlation (dispersion wedge) premium** (index implied vol vs mean single-stock
     implied vol, FRED CBOE series → long US100 after high implied correlation) → Candidate 16,
-    pre-registered 2026-11-25, library concept #26 carried to test.
+    pre-registered 2026-11-25, library concept #26 carried to test. REJECTED (Holm; IS
+    loses in 8/9 configs).

@@ -10,4 +10,5 @@ fred VIXCLS VIXCLS07 2007-01-01; fred VXVCLS VXVCLS07 2007-01-01
 for p in GLD:GLD SLV:SLV GC=F:GCF SI=F:SIF; do yh "${p%%:*}" "${p##*:}" 1546300800; done
 for p in GLD:GLD18 GC=F:GCF18 %5ENDX:NDX %5EGSPC:GSPC; do yh "${p%%:*}" "${p##*:}" 1514764800; done
 for p in IEF:IEF07 QQQ:QQQ07 SPY:SPY07 %5ENDX:NDX07 %5EGSPC:GSPC07; do yh "${p%%:*}" "${p##*:}" 1167609600; done
+for s in VXNCLS VIXCLS VXVCLS VXAPLCLS VXGOGCLS VXAZNCLS VXGSCLS VXIBMCLS DFF; do fred $s ${s}10 2007-01-01; done  # Candidate 16
 echo "done: $(ls "$D" | wc -l) files in $D"

@@ -5,6 +5,22 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-25 — Candidate 16 (implied-correlation premium) REJECTED; Candidate 15 left for the local run
+
+Candidate 16 pre-registered in 72298a1 before its data was downloaded: long US100 when the
+z-score of (VXN / mean of the Apple, Alphabet, Amazon CBOE volatility indices)^2 is high.
+In-sample 2020-2022 it lost in 8 of 9 configs; the IS-selected cell (k=0.5, H=20) then made
+OOS PF 2.37 on 36 trades with random-entry p = 0.048, but fails the Holm gate (needs ≤ 0.0056)
+and works in one period only. REJECT, closed (detail in `CLAUDE_TO_CHATGPT.md`, code
+`research/run_c16.py`).
+
+Candidate 15: the Dukascopy download from the cloud egress was stopped after its time limit
+with 4 of ~7,000 files; probes at 2 s and 8 s spacing returned 429 or dropped connections on
+13 of 14 requests. Not retried from the cloud; it runs from the owner's computer per
+`research/README.md`. Project status: 0 PASS, standing decision NO TRADE.
+
+---
+
 ## 2026-11-24 — Daily shadow report moved into the research session
 
 The first scheduled run (22:38 UTC) computed the paper entry correctly (long US100 at the

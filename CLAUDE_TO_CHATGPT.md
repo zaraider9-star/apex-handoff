@@ -1732,3 +1732,23 @@ trades, same H, random OOS days) p < 0.05 · G4 Holm over the 9 configs · G5 �
 neighbours OOS PF > 1.0 · G6 US500 (VIX vs 5-name mean) same frozen config OOS PF > 1.0 · G7
 anchored yearly walk-forward PF > 1.10 · G8 MC 95th-pct DD ≤ 15% at 1% risk · G9 cost ×2 PF >
 1.0. Any failure = REJECT, construction closed.
+
+### CANDIDATE 16 — RESULT (tested 2026-11-25) — REJECT (1 of 9 gates failed, IS loses)
+
+G0 passed (signal only, IS): Spearman with VXN 252-day rank 0.38; 38% of k=1.0 signal days
+were backwardation days. In-sample 2020-2022 the rule **lost in 8 of 9 configs** (IS PF
+0.69-0.93; only k=1.0/H=20 reached 1.04 on 19 trades). IS-selected k=0.5/H=20 (IS PF 0.93,
+31 trades). OOS 2023-2026-11-24: 36 trades, PF 2.37, WR 61%, sumR +18.2, HAC t 2.19; random
+long entries median PF 1.58, p = 0.048; **G4 Holm FAIL** (smallest of 9 p-values 0.048 vs
+required 0.0056). Passes: G1, G2, G3, G5 (neighbours 2.24 / 1.58), G6 US500 PF 2.72 on 29,
+G7 walk-forward 1.36 (by year 2.47 / inf / 0.84 / 0.57), G8 MC DD 7.1%, G9 2× cost 2.20.
+Every OOS config is long-only in a +141% buy-and-hold window and random long entries already
+score PF 1.29-1.58, so most of the OOS PF is the market's drift; the timing adds a margin the
+multiple-testing gate does not accept, and the rule did not work in-sample. Passes in one
+period only → REJECT, construction closed. This is library Candidate 11's mechanism tested
+through a free proxy (CBOE single-stock volatility indices on FRED instead of paid
+constituent options data).
+
+Observation, NOT eligible as a hypothesis (it comes from this test's OOS data): the k=0.5/H=20
+cell's OOS p = 0.048 sits next to Candidate 14's 0.060 — both are long-after-stress rules
+whose edge over random long entries is too small to separate from drift at ~35 trades.

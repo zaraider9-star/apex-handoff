@@ -50,6 +50,7 @@ reverse to SL.
 | Overnight drift (Candidate 13, owner protocol) | Long US100 close → next open | REJECTED — PF 1.11 vs random-segment median 1.07 (p=0.27), IS PF 0.98 | overnight holding premium |
 | Backwardation buy-the-fear on US100, 2008-2019 (Candidate 14, owner protocol) | Long when VIX > VIX3M, 20-day hold | REJECTED (near miss) — OOS PF 2.17, 33 trades, 7/9 gates pass, but random-entry p=0.060 and no Holm survivor | VIX term-structure backwardation |
 | FOMC pre-announcement drift, daily (Candidate 2, owner protocol) | Long US100 close before statement day → statement-day close | REJECTED — IS PF 2.13 but OOS PF 1.08 below random-day median 1.15 (p=0.55); US500 PF 0.70 | scheduled macro-calendar drift |
+| Implied-correlation premium on US100 (Candidate 16, owner protocol) | Long when z-score of (VXN / mean single-stock CBOE vol)^2 is high, 5-20 day hold | REJECTED — IS PF < 1 in 8/9 configs; IS-selected OOS PF 2.37 on 36 trades but random-entry p=0.048 fails Holm (m=9); works in one period only | options-implied correlation / dispersion wedge |
 | External volatility regime filter, NASDAQ-specific implied vol (Candidate 3 test) | Causal 252-day percentile regime of a NASDAQ-100-specific implied-volatility index → next-day US100 cash-session return | REJECTED — fails every TRAIN gate at once (no state significant, permutation p=0.81 vs required ≤0.025, mandatory matched-control gate shows the nominal effect is mostly explained by US100's own volatility/calendar/momentum context); VALIDATION (run once regardless, for completeness) independently corroborates rather than rescues; tick-verification/cost-stress/sealed-TEST never reached | external volatility surface / regime filter |
 
 **EXP013's recommendation is the single most load-bearing constraint on new candidates**:
@@ -115,4 +116,5 @@ OOS window a long-biased rule looks profitable on PF alone; a GVZ-minus-realized
 spread as a GOLD direction signal; a VIX/VIX3M term-structure state (contango long/flat or
 backwardation buy-the-fear, any smoothing/holding period) on US100/US500; month-end
 stock-vs-bond rebalancing pressure on US indices; the unconditional overnight hold on
-US indices; pre-FOMC drift on a close-to-close daily construction.
+US indices; pre-FOMC drift on a close-to-close daily construction; an index-vs-single-stock implied-vol
+(implied-correlation) z-score as a long US100 timing signal.
