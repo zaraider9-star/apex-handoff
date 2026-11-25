@@ -1752,3 +1752,37 @@ constituent options data).
 Observation, NOT eligible as a hypothesis (it comes from this test's OOS data): the k=0.5/H=20
 cell's OOS p = 0.048 sits next to Candidate 14's 0.060 — both are long-after-stress rules
 whose edge over random long entries is too small to separate from drift at ~35 trades.
+
+## CANDIDATE 17 — Even-week FOMC-cycle premium on US100 — PRE-REGISTRATION (2026-11-25)
+
+Committed before any FOMC-cycle statistic was computed. The price series (Yahoo `^NDX`,
+`^GSPC`) are the ones already on disk from earlier candidates; no cycle-week return was
+looked at.
+
+**Mechanism.** Since 1994 the US equity premium has been earned in even weeks of the FOMC
+cycle (weeks 0, 2, 4, 6 counted from the last scheduled meeting), attributed to systematic
+informal Fed communication and policy easing after market declines; the journal version
+reports the pattern holding in a 2014-2016 period after the first draft (Cieslak, Morse &
+Vissing-Jorgensen, "Stock returns over the FOMC cycle", Journal of Finance 74(5), 2019).
+Source quality A. Post-2016 persistence: unknown (no follow-up located) — this is what the
+test measures. Prior overlap: PARTIAL with Candidate 2 (week 0 contains the pre-FOMC day);
+3 of the 4 trades per cycle do not.
+
+**Data.** Yahoo `^NDX` / `^GSPC` daily; scheduled FOMC statement days 2019-10-30, 2019-12-11,
+the Candidate 2 list for 2020-2026 (federalreserve.gov), and 2026-12-09 as the boundary of
+the last cycle. Day 0 = statement day; days counted in sessions of the instrument.
+
+**Rule.** For each meeting with day 0 at session j and the next meeting at session j', enter
+long at the close of session e = j + 10k − 2 + s for k = 0, 1, 2, 3 (cycle weeks 0, 2, 4, 6;
+week w covers sessions 5w−1 … 5w+3), only if e < j' − 2 + s (entry still inside this cycle).
+Exit at SL 2×ATR(14) or the close H sessions after entry; non-overlapping trades; costs and
+swap as in the shared engine.
+
+**Grid (IS 2020-2022).** shift s ∈ {−1, 0, +1} × H ∈ {4, 5, 6} = 9 configs (s = 0, H = 5 is
+the paper's definition); selection = highest IS PF in R with ≥ 30 IS trades. OOS 2023-01-01 →
+latest complete session.
+
+**Gates G1-G9** identical to Candidates 7-16 (random-entry control = same number of long
+trades, same H, random OOS sessions; Holm over 9; US500 cross-check with the same frozen
+config). Any failure = REJECT, construction closed. Not gating: PF of week-0 trades vs
+weeks 2-6, and of the odd weeks (1, 3, 5) as the paper's contrast.
