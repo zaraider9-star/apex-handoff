@@ -263,4 +263,5 @@ IS-selected); Candidate 2's GOLD diagnostic on FOMC days (PF 1.36, 31 events).
     pre-registered 2026-11-25, library concept #26 carried to test. REJECTED (Holm; IS
     loses in 8/9 configs).
 42. **Even-week FOMC-cycle premium** (Cieslak, Morse & Vissing-Jorgensen, JF 2019; long US100
-    in cycle weeks 0, 2, 4, 6) → Candidate 17, pre-registered 2026-11-25.
+    in cycle weeks 0, 2, 4, 6) → Candidate 17, pre-registered 2026-11-25. REJECTED (pattern
+    reversed OOS).

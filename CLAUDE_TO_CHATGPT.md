@@ -1786,3 +1786,14 @@ latest complete session.
 trades, same H, random OOS sessions; Holm over 9; US500 cross-check with the same frozen
 config). Any failure = REJECT, construction closed. Not gating: PF of week-0 trades vs
 weeks 2-6, and of the odd weeks (1, 3, 5) as the paper's contrast.
+
+### CANDIDATE 17 — RESULT (tested 2026-11-25) — REJECT (4 of 9 gates failed)
+
+In-sample 2020-2022 the even-week rule **lost in all 9 configs** (IS PF 0.74-0.99, 74-79
+trades). IS-selected s=+1/H=5 (IS PF 0.99): OOS 95 trades, PF 1.02 (G1 **FAIL**), random long
+entries median PF 1.37, p = 0.94 (G3/G4 **FAIL**), 2× cost PF 0.96 (G9 **FAIL**). Passes: G2,
+G5, G6 US500 PF 1.08, G7 walk-forward 1.13, G8 MC DD 14.2%. HAC t 0.40; by year 1.23 / 1.54 /
+0.51 / 1.04. Not gating, OOS: weeks 2-4-6 PF 0.86 on 77 trades, odd weeks 1-3-5 PF 1.31 on 94,
+week 0 PF 1.59 on 31 — the opposite of the published even/odd pattern. On US100 the
+FOMC-cycle premium did not persist after the paper's 1994-2016 sample. Closed per the
+stopping rule.

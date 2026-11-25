@@ -7,7 +7,7 @@ data only (FRED, Yahoo Finance). No broker, account or credential data.
   random-entry control, Holm, walk-forward, Monte Carlo drawdown, gates G1-G9.
 - `c7_test.py` — original stand-alone Candidate 7 test; `run_c7_check.py` reproduces it
   with the shared engine (refactor check).
-- `run_c8_c9.py`, `run_c12_c14.py <c12|c14>`, `run_c13.py`, `run_c2.py`, `run_c16.py` — one per candidate.
+- `run_c8_c9.py`, `run_c12_c14.py <c12|c14>`, `run_c13.py`, `run_c2.py`, `run_c16.py`, `run_c17.py` — one per candidate.
 - `fetch_data.sh <dir>` — re-downloads the dataset.
 
 Reproduce: `research/fetch_data.sh /tmp/apexdata && python3 -I research/run_c8_c9.py research /tmp/apexdata`

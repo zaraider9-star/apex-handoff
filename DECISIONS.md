@@ -5,6 +5,16 @@ superseded, add a new entry that says so and links back.
 
 ---
 
+## 2026-11-25 — Candidate 17 (even-week FOMC cycle) REJECTED
+
+Pre-registered in 83bafd1 (Cieslak, Morse & Vissing-Jorgensen, JF 2019). In-sample the rule
+lost in all 9 configs; the IS-selected cell made OOS PF 1.02 on 95 trades, worse than random
+long entries (p = 0.94). OOS the even weeks 2-4-6 lost (PF 0.86) while odd weeks gained (PF
+1.31) — the published pattern reversed. REJECT, closed (`research/run_c17.py`). Project
+status: 0 PASS, standing decision NO TRADE.
+
+---
+
 ## 2026-11-25 — Candidate 16 (implied-correlation premium) REJECTED; Candidate 15 left for the local run
 
 Candidate 16 pre-registered in 72298a1 before its data was downloaded: long US100 when the
