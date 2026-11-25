@@ -1683,3 +1683,52 @@ placed on random OOS sessions, p < 0.05 · G4 Holm over the 6 configs' G3 p-valu
 of grid neighbours with OOS PF > 1.0 · G6 US500 same frozen config OOS PF > 1.0 · G7
 anchored yearly walk-forward PF > 1.10 · G8 MC 95th-pct DD ≤ 15% at 1% risk · G9 cost
 stress (spread paid ×2, slippage ×2) PF > 1.0. Any failure = REJECT, construction closed.
+
+---
+
+# FIFTH PASS — 2026-11-25 — options-implied correlation (free daily data)
+
+## CANDIDATE 16 — Implied-correlation (dispersion wedge) premium on US100 — PRE-REGISTRATION
+
+Committed BEFORE the series below were downloaded to disk (only a first/last-row availability
+probe was run; no return or signal value was computed).
+
+**Mechanism.** Index options embed a premium for correlation risk: investors pay up for index
+protection relative to single-stock options, so index implied volatility is high relative to
+constituent implied volatility when correlation risk is priced high (Driessen, Maenhout &
+Vilkov, "The price of correlation risk", Journal of Finance 2009). A high priced correlation
+premium is compensation that predicts higher subsequent index returns (Buss, Schönleber &
+Vilkov, "Expected correlation and future market returns", working paper; realized-correlation
+analogue: Pollet & Wilson, "Average correlation and stock market returns", Journal of
+Financial Economics 2010). Source quality A for the premium, B for the return predictability.
+Carried from general literature, concept #26 of the library shortlist. Prior overlap: PARTIAL
+with Candidate 3 (VXN level percentile) and Candidate 14 (VIX/VIX3M backwardation) because all
+three rise in stress; separated by the pre-test gate G0 below.
+
+**Data.** FRED `VXNCLS` (CBOE NASDAQ-100 volatility index), `VXAPLCLS`, `VXGOGCLS`, `VXAZNCLS`
+(CBOE single-stock volatility indices on Apple, Alphabet, Amazon); cross-check: `VIXCLS` with
+the mean of `VXAPLCLS`, `VXGOGCLS`, `VXAZNCLS`, `VXGSCLS`, `VXIBMCLS`. Prices, ATR and costs
+from the shared engine (US100 2.0 points, US500 0.6 points round trip, swap markup 2.5%).
+Only dates where every series of the instrument has a value.
+
+**Signal.** IC_t = (index vol_t / mean single-stock vol_t)^2 (equal-weight implied-correlation
+proxy). z_t = (IC_t − mean of the last 252 IC values) / their standard deviation, including t.
+Long when z_t > k, otherwise flat. Long only (the literature predicts higher returns after
+high IC, not negative returns after low IC). Value dated t is first tradable at the close of
+the next session (engine convention). Exits: SL 2×ATR(14), time exit after H sessions,
+non-overlapping trades.
+
+**Grid (IS 2020-2022).** k ∈ {0.5, 1.0, 1.5} × H ∈ {5, 10, 20} = 9 configs; selection =
+highest IS PF in R with ≥ 30 IS trades. OOS 2023-01-01 → latest complete session.
+
+**G0 — pre-test duplicate gate (signal only, IS 2020-2022 only, computed before any return).**
+Close as a duplicate of Candidate 3 / 14 without reading returns if either: Spearman
+correlation of z_t with the 252-day percentile rank of VXN > 0.70, or more than 50% of the
+k=1.0 signal days are VIX > VIX3M backwardation days.
+
+**Gates G1-G9 (all required, IS-selected config)** — identical to Candidates 7-14: G1 OOS PF >
+1.15 · G2 ≥ 30 OOS trades · G3 random-entry control (10,000 sims, same number of long
+trades, same H, random OOS days) p < 0.05 · G4 Holm over the 9 configs · G5 ≥ 2/3 grid
+neighbours OOS PF > 1.0 · G6 US500 (VIX vs 5-name mean) same frozen config OOS PF > 1.0 · G7
+anchored yearly walk-forward PF > 1.10 · G8 MC 95th-pct DD ≤ 15% at 1% risk · G9 cost ×2 PF >
+1.0. Any failure = REJECT, construction closed.
